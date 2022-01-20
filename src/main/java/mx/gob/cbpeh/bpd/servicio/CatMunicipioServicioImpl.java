@@ -25,7 +25,7 @@ public class CatMunicipioServicioImpl implements CatMunicipioServicio {
 	@Transactional
 	public List<CatMunicipio> getCatMunicipiosPorEstado(String codigoEstado) {
 	
-		return municipioRepositorio.findByCodigoEstado(codigoEstado);
+		return municipioRepositorio.findByCodigoEstadoOrderByMunicipioDetalleAsc(codigoEstado);
 	}
 
 	@Override

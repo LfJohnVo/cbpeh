@@ -9,7 +9,7 @@ import mx.gob.cbpeh.bpd.modelo.*;
 @Repository("municipioRepositorio")
 public interface CatMunicipioRepositorio extends JpaRepository<CatMunicipio, Integer>{
 	
-	List<CatMunicipio> findByCodigoEstado(String codigoEstado);
+	List<CatMunicipio> findByCodigoEstadoOrderByMunicipioDetalleAsc(String codigoEstado);
 	
 
 }
