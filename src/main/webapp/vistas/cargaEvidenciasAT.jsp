@@ -1,8 +1,10 @@
 <%@page import="mx.gob.cbpeh.bpd.modelo.Expediente"%>
+<%@page import="mx.gob.cbpeh.bpd.modelo.CatEstatusLocalizado"%>
 <%@page import="java.util.List"%>
 <%
 	HttpSession session2 = request.getSession();	
 	List<Expediente> expedientes = (List<Expediente>)session2.getAttribute("expedientes");	
+	List<CatEstatusLocalizado> datosEstatusLocalizado = (List<CatEstatusLocalizado>)session2.getAttribute("estatusLocalizado");
 %>
 <script src="<%=request.getContextPath()%>/recursos/scripts/atencionCiudadana.js"></script>
 
@@ -23,6 +25,15 @@
 				<option value="">Selecciona...</option>
 			<% for(Expediente expediente:expedientes){ %>
 				<option value="<%=expediente.getIdExpediente() %> "><%=expediente.getIdExpediente() %></option>									
+			<% } %>
+			</select>
+		</div>
+		<div class="col-lg-6 col-md-12">
+			<label for="estatusLocalizadoAt">Estatus</label> <select
+				class="custom-select d-block w-100" id="estatusLocalizadoAt" name="estatusLocalizadoAt">
+				<option value="">Selecciona...</option>
+			<% for(CatEstatusLocalizado estatus:datosEstatusLocalizado){ %>
+				<option value="<%=estatus.getIdEstatusLocalizado() %>"><%=estatus.getEstatusLocalizadoDetalle() %></option>									
 			<% } %>
 			</select>
 		</div>

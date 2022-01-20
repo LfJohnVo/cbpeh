@@ -74,6 +74,7 @@ var estatusLD = document.getElementById("estatusLD").value;
 		contentType : false,
 		success : function() {
 			alert("ok");
+			resetLargaData();
 		},
 		error : function() {
 			monstrarAlerta({message:"Ocurrio un inconveniente al realizar la peticion", class:"danger"});

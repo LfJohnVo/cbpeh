@@ -113,6 +113,7 @@
                    console.log('SUCCESS: ' + textStatus); 
                    if(data.estatus === 1)    {           
               showAlert({message: data.descripcion, class:"success"});  
+              $('.custom-select').val('').trigger('change'); // Reset Select2
                   //$(form).get(0).reset(); 
            } else if(data.estatus <= 0)    {
            showAlert({message: data.descripcion, class:"danger"});

@@ -53,6 +53,7 @@ function postFilesDataAb(formData) {
 				resetAccionBusqueda();
 				monstrarAlerta({message: data.descripcion, class:"info"});
 				document.getElementById("formAccionBusqueda").reset();
+				$('.custom-select').val('').trigger('change'); // Reset Select2
 			}else if(data.estatus ===-3){
 				monstrarAlerta({message: data.descripcion, class:"danger"});
 			}else if(data.estatus ===-4){

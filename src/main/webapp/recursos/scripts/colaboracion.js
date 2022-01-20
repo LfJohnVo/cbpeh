@@ -56,6 +56,7 @@ function guardarColaboracion(event) {
 			if(data.estatus ===1){
 				monstrarAlerta({message: data.descripcion, class:"info"});
 				document.getElementById("formColaboracion").reset();
+				$('.custom-select').val('').trigger('change'); // Reset Select2
 			}else if(data.estatus ===-3){
 				monstrarAlerta({message: data.descripcion, class:"danger"});
 			}
