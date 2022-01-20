@@ -213,6 +213,7 @@ function buscarDiario() {
 }
 function limpiarTablaDiaria(){
 	document.getElementById("formConsultaDiario").reset();
+	$('.custom-select').val('').trigger('change'); // Se resetea también select2
 	$('#bodyDiario').html("");
 	initRegistroDiario();
 }
@@ -266,6 +267,7 @@ $( "#numExpedienteAb" ).change(function() {
 
 function resetAccionBusqueda(){
 	document.getElementById("formAccionBusqueda").reset();
+	$('.custom-select').val('').trigger('change'); // Reset select2
 	$("#btnExportarExp").prop("disabled", true);
 }
 

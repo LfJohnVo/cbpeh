@@ -247,6 +247,7 @@ function buscarConcentrado() {
 }
 function limpiarTabla(){
 	document.getElementById("formConcentradoAt").reset();
+	$('.custom-select').val('').trigger('change'); // Reset select2
 	$('#bodyConcentrados').html("");
 }
 
@@ -675,6 +676,7 @@ function initConcentrado(){
 }
 
 function initEstatusPersona(){
+	$('.custom-select').val('').trigger('change'); // Se resetea también select2
 	refrescarExpedientes("expedienteConsulta"); //combo estatus
 	//para los form editar
 	$('#formReportanteRead').on('submit', saveFormReportanteEdit);

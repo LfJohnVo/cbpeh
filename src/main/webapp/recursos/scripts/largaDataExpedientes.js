@@ -121,6 +121,7 @@ function validaExporta(){
 
 function resetLargaData(){
 	document.getElementById("formLargaData").reset();
+	$('.custom-select').val('').trigger('change'); // Reset select2
 	$("#btnExportarLd").prop("disabled", true);
 	arrayLugares = [];
 }

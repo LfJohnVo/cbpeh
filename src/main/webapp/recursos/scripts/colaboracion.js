@@ -97,5 +97,6 @@ function changeInputCol(val) {
 
 function resetColaboracion(){
 	document.getElementById("formColaboracion").reset();
+	$('.custom-select').val('').trigger('change'); // Se resetea también select2
 	$("#btnExportarColaboracion").prop("disabled", true);
 }
