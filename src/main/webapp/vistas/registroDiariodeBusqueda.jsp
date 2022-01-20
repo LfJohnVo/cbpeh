@@ -103,4 +103,12 @@
         </tbody>
     </table>
 </div>
+<script>
+	$('.custom-select').select2({
+	 theme:'bootstrap4',
+	 placeholder: 'Selecciona un opción',
+	 allowClear: true
+	})
+	
+</script>
 			

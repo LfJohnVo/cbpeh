@@ -149,3 +149,11 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>)session2.getAtt
 		</div>
 	</div>
 </form>
+<script>
+$('.custom-select').select2({
+	 theme:'bootstrap4',
+	 placeholder: 'Selecciona un opción',
+	 allowClear: true
+	})
+	
+</script>

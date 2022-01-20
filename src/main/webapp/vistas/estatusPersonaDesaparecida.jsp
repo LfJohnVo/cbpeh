@@ -135,7 +135,6 @@ String expedienteConsul = (String) session2.getAttribute("expedienteConsul");
 	</script>
 <%	} %>
 
-
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
 	<h4 class="h4 mb-0 text-gray-800">Consultar Expediente</h4>
 </div>
@@ -2024,3 +2023,10 @@ String expedienteConsul = (String) session2.getAttribute("expedienteConsul");
 		</div>
 	</div>
 </div>
+<script>
+$('.custom-select').select2({
+ theme:'bootstrap4',
+ placeholder: 'Selecciona un opción',
+ allowClear: true
+})
+</script>

@@ -55,3 +55,14 @@
 		</div>
 	</div>
 </form>
+<script>
+$('.custom-select').select2({
+	 theme:'bootstrap4',
+	 placeholder: 'Selecciona un opción',
+	 allowClear: true
+})
+document.querySelector('[type="reset"]').addEventListener('click',()=>{
+	$('.custom-select').val('').trigger('change'); // Se resetea también select2
+})
+
+</script>
