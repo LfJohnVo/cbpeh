@@ -63,6 +63,19 @@ public class ArchivoExpediente  {
 	@Column(name="id_usuario_carga")
 	private String idUsuarioCarga;
 
+	/*@ManyToOne
+	@JoinColumn(name="estatus_localizado")*/
+	@Column(name="estatus_localizado")
+	private int idEstatusLocalizado;
+	
+	public int getIdEstatusLocalizado() {
+		return idEstatusLocalizado;
+	}
+
+	public void setIdEstatusLocalizado(int idEstatusLocalizado) {
+		this.idEstatusLocalizado = idEstatusLocalizado;
+	}
+
 	public int getIdArchivoExpediente() {
 		return idArchivoExpediente;
 	}

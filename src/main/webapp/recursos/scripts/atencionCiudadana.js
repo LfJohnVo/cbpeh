@@ -131,6 +131,7 @@ function postFilesDataEvi(formData) {
 			if (data.estatus === 1) {
 				monstrarAlerta({ message: data.descripcion, class: "info" });
 				document.getElementById("formCargaEvidenciaAt").reset();
+				$('.custom-select').val('').trigger('change'); // Reset Select2
 			} else if (data.estatus === -3) {
 				monstrarAlerta({ message: data.descripcion, class: "danger" });
 			}
@@ -490,6 +491,7 @@ function consultarEstatusPersona(){
 					$('#cardActaEntrevista').show();
 				}else{
 					document.getElementById("formActaEntrevistaRead").reset();
+					$('.custom-select').val('').trigger('change'); // Reset Select2
 					$('#cardActaEntrevista').hide();
 				}
 			}else if(data.estatus===2){
@@ -1476,6 +1478,7 @@ function guardarActaEntrevista(event) {
 			if(data.estatus ===1){
 				monstrarAlerta({message: data.descripcion, class:"info"});
 				document.getElementById("formActaEntrevista").reset();
+				$('.custom-select').val('').trigger('change'); // Reset Select2
 			}else if(data.estatus ===-3){
 				monstrarAlerta({message: data.descripcion, class:"danger"});
 			}
@@ -1863,7 +1866,7 @@ function limpiarConsultaExp(){
 	document.getElementById("formDesaparecidoRead").reset();
 	$("#evidenciasBody").html("");
 	document.getElementById("formActaEntrevistaRead").reset();
-	
+	$('.custom-select').val('').trigger('change'); // Reset Select2
 	$('#btnExportarExp').prop("disabled", true);
 	$('#cardReportante').hide();
 	$('#cardDesaparecido').hide();

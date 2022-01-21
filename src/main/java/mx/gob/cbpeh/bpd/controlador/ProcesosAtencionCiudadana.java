@@ -133,8 +133,9 @@ public class ProcesosAtencionCiudadana {
 	@RequestMapping(value = "/guardar-evidencia-at", method = RequestMethod.POST)
 	public ResponseEntity<CommonResponse> guardarEvidenciaAt(@RequestParam("evidenciaEviAt") MultipartFile file,
 			@RequestParam("expedienteEviAt") String idExpediente,
-			@RequestParam("descripcionEviAt") String archivoDescripcion) {
-
+			@RequestParam("descripcionEviAt") String archivoDescripcion,
+			@RequestParam("estatusLocalizadoAt") int estatusLocalizado) {
+		
 		CommonResponse commonResponse = new CommonResponse();
 		commonResponse.setEstatus(-3);
 		commonResponse.setDescripcion("Se genero un inconveniente al guardar la informacion.");
@@ -156,6 +157,7 @@ public class ProcesosAtencionCiudadana {
 			archivoExpediente.setArchivoDescripcion(archivoDescripcion);
 			archivoExpediente.setIdPerfilCarga(4); //atencion ciudadana
 			archivoExpediente.setIdEstatusExpediente(1);
+			archivoExpediente.setIdEstatusLocalizado(estatusLocalizado);
 			archivoExpediente = archivoExpedienteServicio.saveArchivoExpediente(archivoExpediente);
 			if(archivoExpediente!=null && archivoExpediente.getIdArchivoExpediente()>0) {// guardo el archivo?
 				log.info("Archivo guardado:"+archivoExpediente.getIdArchivoExpediente());
