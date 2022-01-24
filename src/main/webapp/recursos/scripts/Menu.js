@@ -61,7 +61,11 @@ $(document).ready(function() {
 	});
 	//Fin menu acciones de busqueda	
 	
-	
+	// Acceso a formatos
+	$("#mDescargarFormatos").click(function() {
+        $("#container-fluid").load(pathGlobal + "/vistas/descargaDeFormatos.jsp");
+    });
+	// Fin acceso a formatos
 	
 	// Acceso General
 	

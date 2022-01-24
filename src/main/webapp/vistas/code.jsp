@@ -40,16 +40,16 @@
                 <br>
                 <fieldset>
                 
-                    <h2 class="text-center">Código de verificación</h2>
+                    <h2 class="text-center">Cï¿½digo de verificaciï¿½n</h2>
                     <% if(request.getParameter("error") != null){ %>
                     <div class="alert alert-danger">
-                        Código de verificación inválido.
+                        Cï¿½digo de verificaciï¿½n invï¿½lido.
                     </div>
                     <% } %>
                     <br>
                     <br>
                     <div class="form-group">
-                        <input type="text" id="code" name="code" class="form-control input-lg" placeholder="Código de verificación" required="true"/>
+                        <input type="text" id="code" name="code" class="form-control input-lg" placeholder="Cï¿½digo de verificaciï¿½n" required="true"/>
                     </div>
                     <br>
                     <div class="row">
