@@ -113,7 +113,7 @@
         </a>
         <div id="collapseProtocolo1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a id="links" class="collapse-item" href="#">Links de interés</a>
+                <a id="links" class="collapse-item" href="#">Links de interï¿½s</a>
                 <a id="directorios" class="collapse-item" href="#">Directorio</a>                
             </div>
         </div>
@@ -161,12 +161,27 @@
                 <!-- <h6 class="collapse-header">Analisis de contexto</h6> -->
                 <a id="mActaEntrevista" class="collapse-item" href="#">Acta Entrevista</a>
 				<a id="mColaboracion" class="collapse-item" href="#">Colaboraci&oacute;n</a>
-                <a id="mAccionBusqueda" class="collapse-item" href="#">Acci&oacute;n de búsqueda</a>
+                <a id="mAccionBusqueda" class="collapse-item" href="#">Acci&oacute;n de bï¿½squeda</a>
                 <a id="mLargaData" class="collapse-item" href="#">Larga Data</a>
             </div>
         </div>
     </li>
-    
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <!-- Nav Item -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+            aria-expanded="true" aria-controls="collapseThree">
+            <i class="fas fa-fw fa-file-pdf"></i>
+            <span>Formatos</span>
+        </a>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a id="mDescargarFormatos" class="collapse-item" href="#">Descargar Formato</a>
+            </div>
+        </div>
+    </li>
+    <!-- Divider -->
     <!-- Divider -->
     <hr class="sidebar-divider">        
     <!-- Nav Item -->

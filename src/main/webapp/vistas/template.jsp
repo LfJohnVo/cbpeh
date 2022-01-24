@@ -29,7 +29,8 @@
     <script type="text/javascript">pathGlobal = "<%=request.getContextPath()%>";</script>
 <meta http-equiv="X-UA-Compatible" content="IE=chrome">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>#hidalgobuscacontigo</title>
+<title>Hidalgo Busca Contigo</title>
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/recursos/img/icons/favicon.ico"/>
 <!-- Custom fonts for this template-->
 <link href="<%=request.getContextPath()%>/recursos/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 <link href="<%=request.getContextPath()%>/recursos/vendor/bootstrap/scss/carousel.css" rel="stylesheet">
