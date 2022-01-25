@@ -84,6 +84,7 @@ import mx.gob.cbpeh.bpd.servicio.CatTipoNotaServicio;
 import mx.gob.cbpeh.bpd.servicio.CatTipoOjoServicio;
 import mx.gob.cbpeh.bpd.servicio.CatTipoSangreServicio;
 import mx.gob.cbpeh.bpd.servicio.CatTransporteServicio;
+import mx.gob.cbpeh.bpd.servicio.ColaboracionServicio;
 import mx.gob.cbpeh.bpd.servicio.ComunicadoServicio;
 import mx.gob.cbpeh.bpd.servicio.DirectorioService;
 import mx.gob.cbpeh.bpd.servicio.ExpedienteIncompetenciaServicio;
@@ -95,9 +96,10 @@ import mx.gob.cbpeh.bpd.servicio.UsuarioServicio;
 @Controller
 @RequestMapping(value = "/accionesbusqueda")
 public class AccionesBusquedaControlador {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(AccionesBusquedaControlador.class);
-	
+	@Autowired
+	ColaboracionServicio colaboracionServicio;
 	@Autowired
 	ExpedienteServicio expedienteServicios;
 	@Autowired
@@ -139,12 +141,12 @@ public class AccionesBusquedaControlador {
 	@Autowired
 	private CatEstatusColaboracionServicio catEstatusColaboracionServicio;
 	@Autowired
-	private CatLugarBusquedaServicio catLugarBusquedaServicio;	
+	private CatLugarBusquedaServicio catLugarBusquedaServicio;
 	@Autowired
 	private ComunicadoServicio comunicadoServicio;
 	@Autowired
 	DirectorioService directorioService;
-	
+
 	@Autowired
 	CatEdadServicio edadesServicio;
 	@Autowired
@@ -206,7 +208,7 @@ public class AccionesBusquedaControlador {
 	@Autowired
 	ExpedienteIncompetenciaServicio expedienteIncompetenciaServicios;
 	@Autowired
-	PersonaReportaServicio personaReportaServicio;	
+	PersonaReportaServicio personaReportaServicio;
 	@Autowired
 	PersonaIncompetenciaServicio personaIncompetenciaServicios;
 	@Autowired
@@ -217,24 +219,25 @@ public class AccionesBusquedaControlador {
 	CatGradoEstudioServicio catGradoEstudioServicio;
 	@Autowired
 	CatIdiomaServicio catIdiomaServicio;
-	
+
 	@GetMapping
-	private ModelAndView showUserView(@RequestParam Map<String, String> reqParam) throws ResourceNotFoundException, JsonProcessingException{
-		
+	private ModelAndView showUserView(@RequestParam Map<String, String> reqParam)
+			throws ResourceNotFoundException, JsonProcessingException {
+
 		ModelAndView mav = new ModelAndView("template");
 		log.info("Ingreso al controller de /accionesbusqueda ");
 		System.out.println("Ingreso al controller de /accionesbusqueda ");
 
-		String expedienteConsul  = reqParam.get("idExpediente");
+		String expedienteConsul = reqParam.get("idExpediente");
 		mav.addObject("expedienteConsul", expedienteConsul);
-		
+
 		mav.addObject("expedientes", expedienteServicios.getExpedientes());
-	//	mav.addObject("estatus", catEstatusServicio.getCatEstatus());
+		// mav.addObject("estatus", catEstatusServicio.getCatEstatus());
 		mav.addObject("municipios", catMunicipioServicio.getCatMunicipiosPorEstado("13"));// estado 13 hidalgo
 		mav.addObject("estatusLocalizado", catEstatusLocalizadoServicio.getCatEstatusLocalizados());
-		
-		mav.addObject("estados", catEstadoServicio.getCatEstados());		
-		
+
+		mav.addObject("estados", catEstadoServicio.getCatEstados());
+
 		mav.addObject("companiaTel", companiaTelefonoServicio.getCatCompaniaTelefonos());
 		mav.addObject("parentesco", parentescoServicio.getCatParentescos());
 		mav.addObject("areas", areaServicio.getCatAreas());
@@ -245,39 +248,39 @@ public class AccionesBusquedaControlador {
 		mav.addObject("puestoTitular", puestoServicio.getCatPuestos());
 		mav.addObject("usuarioSession", usuarioServicio.getUsuario(getNameUser()));
 		CatTipoComunicado catTipoComunicado = new CatTipoComunicado();
-		  catTipoComunicado.setIdTipoComunicado(2);
-		 ComunicadosDto comunicadosDto = new ComunicadosDto();
-		 List<Comunicado> comunicados = comunicadoServicio.getComunicados(catTipoComunicado);
-		 
-		 for(Comunicado comunicado2: comunicados) {
-			 
+		catTipoComunicado.setIdTipoComunicado(2);
+		ComunicadosDto comunicadosDto = new ComunicadosDto();
+		List<Comunicado> comunicados = comunicadoServicio.getComunicados(catTipoComunicado);
+
+		for (Comunicado comunicado2 : comunicados) {
+
 			Comunicado2 comunicado22 = new Comunicado2();
-			            comunicado22.setIdComunicado(comunicado2.getIdComunicado());
-			            comunicado22.setTitulo(comunicado2.getTitulo());
-			            comunicado22.setDescripcion(comunicado2.getDescripcion());
-			            comunicado22.setUrl(comunicado2.getUrl());
-			            comunicado22.setImagen(comunicado2.getImagen());
-			            comunicado22.setImagenDetalle(comunicado2.getImagen().toString());
-			            
-			            comunicadosDto.getComunicados().add(comunicado22);
-			}
-				   
-		  //Object mapper instance
-		  ObjectMapper mapper = new ObjectMapper();
-		   
-		  //Convert POJO to JSON
-		  String json = mapper.writeValueAsString(comunicadosDto);
-		  
-		 // model.addObject("comunicadosCarrusel", comunicado.getComunicados());
-		  mav.addObject("json", json);
+			comunicado22.setIdComunicado(comunicado2.getIdComunicado());
+			comunicado22.setTitulo(comunicado2.getTitulo());
+			comunicado22.setDescripcion(comunicado2.getDescripcion());
+			comunicado22.setUrl(comunicado2.getUrl());
+			comunicado22.setImagen(comunicado2.getImagen());
+			comunicado22.setImagenDetalle(comunicado2.getImagen().toString());
+
+			comunicadosDto.getComunicados().add(comunicado22);
+		}
+
+		// Object mapper instance
+		ObjectMapper mapper = new ObjectMapper();
+
+		// Convert POJO to JSON
+		String json = mapper.writeValueAsString(comunicadosDto);
+
+		// model.addObject("comunicadosCarrusel", comunicado.getComunicados());
+		mav.addObject("json", json);
 		mav.addObject("tipo", 3);
 		mav.addObject("nameUser", getNameUser());
-		
+
 		mav.addObject("instituciones", catInstitucionServicio.getCatInstitucion());
 		mav.addObject("estatusColaboracion", catEstatusColaboracionServicio.getCatEstatusColaboracions());
 		mav.addObject("lugaresBusqueda", catLugarBusquedaServicio.getCatLugarBusqueda());
 		mav.addObject("aniosExpedientes", expedienteServicios.obtenerAniosExpedientes());
-		
+		mav.addObject("colaboraciones", colaboracionServicio.getColaboracion());
 		mav.addObject("asociacionesHidalgo", directorioService.getAsociacionesHidalgo());
 		mav.addObject("busquedaInmediata", directorioService.getBusquedaInmediatas());
 		mav.addObject("centroRehabilitacion", directorioService.getCentrosRehabilitacion());
@@ -323,17 +326,17 @@ public class AccionesBusquedaControlador {
 		mav.addObject("tipoIdentificacion", catTipoIdentificacionServicio.getCatTipoIdentificacion());
 		mav.addObject("gradoEstudios", catGradoEstudioServicio.getCatGradoEstudio());
 		mav.addObject("idiomas", catIdiomaServicio.getCatIdiomas());
-		
+
 		return mav;
 	}
-	
+
 	private String getNameUser() {
-		
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
 		return currentPrincipalName;
 	}
-	
+
 	@RequestMapping(value = "/guardarLargaData", method = RequestMethod.POST)
 	public void guardarLargaData(@RequestParam("numExpedienteLD") String numExpedienteLD,
 			@RequestParam("fechaLD") String fechaLD, @RequestParam("estatusLD") String estatusLD,
@@ -354,7 +357,7 @@ public class AccionesBusquedaControlador {
 		busquedaLD.setIdBusquedaLargaData("CBPEH-LD-006-2020");
 		busquedaLD.setCalle(calleLargaData);
 		busquedaLD.setEstatusBusquedaLargaData((byte) 1);
-		
+
 		CatMunicipio catMunicipio = new CatMunicipio();
 		if (!municipioLargaData.equals("")) {
 			catMunicipio.setIdMunicipio(Integer.parseInt(municipioLargaData));
@@ -410,7 +413,7 @@ public class AccionesBusquedaControlador {
 		archivoLargaData.setBusquedaLargaData(busquedaLDA);
 		archivoLargaData.setEstatusArchivoLargaData((byte) 1);
 		archivoLargaData.setFechaCarga(Date.valueOf(dates));
-		// archivoLargaData.setHoraCarga(horaCarga);		 
+		// archivoLargaData.setHoraCarga(horaCarga);
 		archivoLargaData.setIdTipoArchivo((byte) 1);
 		archivoLargaData.setIdUsuarioCarga(getNameUser());
 		archivoLargaData.setNombreArchivo(evidenciaLargaData.getName());
@@ -418,5 +421,5 @@ public class AccionesBusquedaControlador {
 		archivoLargaDataServicio.saveArchivoLargaData(archivoLargaData);
 
 	}
-	
+
 }
