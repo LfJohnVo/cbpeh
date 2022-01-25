@@ -6,8 +6,8 @@
 %>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
  	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="<%=request.getContextPath()%>/recursos/vendor/jquery/jquery.min.js"></script>
 	
