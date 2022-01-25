@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" isELIgnored="false" %>
 <%				
 		HttpSession session2 = request.getSession();
 		//session2.setAttribute("estado", request.getAttribute("estado"));
@@ -67,6 +69,7 @@
 		session2.setAttribute("estatusColaboracion", request.getAttribute("estatusColaboracion"));
 		session2.setAttribute("lugaresBusqueda", request.getAttribute("lugaresBusqueda"));
 		session2.setAttribute("aniosExpedientes", request.getAttribute("aniosExpedientes"));
+		session2.setAttribute("colaboraciones", request.getAttribute("colaboraciones"));
 				
 		int idAreaUsuario= 0;
 		if(request.getAttribute("usuarioSession") != null)
@@ -113,7 +116,7 @@
         </a>
         <div id="collapseProtocolo1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a id="links" class="collapse-item" href="#">Links de interés</a>
+                <a id="links" class="collapse-item" href="#">Links de interÃ©s</a>
                 <a id="directorios" class="collapse-item" href="#">Directorio</a>                
             </div>
         </div>
@@ -161,12 +164,27 @@
                 <!-- <h6 class="collapse-header">Analisis de contexto</h6> -->
                 <a id="mActaEntrevista" class="collapse-item" href="#">Acta Entrevista</a>
 				<a id="mColaboracion" class="collapse-item" href="#">Colaboraci&oacute;n</a>
-                <a id="mAccionBusqueda" class="collapse-item" href="#">Acci&oacute;n de búsqueda</a>
+                <a id="mAccionBusqueda" class="collapse-item" href="#">Acci&oacute;n de b&uacute;squeda</a>
                 <a id="mLargaData" class="collapse-item" href="#">Larga Data</a>
             </div>
         </div>
     </li>
-    
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <!-- Nav Item -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+            aria-expanded="true" aria-controls="collapseThree">
+            <i class="fas fa-fw fa-file-pdf"></i>
+            <span>Formatos</span>
+        </a>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a id="mDescargarFormatos" class="collapse-item" href="#">Descargar Formato</a>
+            </div>
+        </div>
+    </li>
+    <!-- Divider -->
     <!-- Divider -->
     <hr class="sidebar-divider">        
     <!-- Nav Item -->
@@ -180,6 +198,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <!-- <h6 class="collapse-header">Analisis de contexto</h6> -->
                 <a id="mConcentrado" class="collapse-item" href="#">Concentrado</a>
+                <a id="mConcentradoColaboraciones" class="collapse-item" href="#">Colaboraciones</a>
                 <a id="mregistroDiariodeBusqueda" class="collapse-item" href="#">Registro diario</a>                
             </div>
         </div>

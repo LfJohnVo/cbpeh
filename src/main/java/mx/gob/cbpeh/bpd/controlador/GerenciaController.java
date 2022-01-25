@@ -69,6 +69,7 @@ import mx.gob.cbpeh.bpd.servicio.CatTipoNotaServicio;
 import mx.gob.cbpeh.bpd.servicio.CatTipoOjoServicio;
 import mx.gob.cbpeh.bpd.servicio.CatTipoSangreServicio;
 import mx.gob.cbpeh.bpd.servicio.CatTransporteServicio;
+import mx.gob.cbpeh.bpd.servicio.ColaboracionServicio;
 import mx.gob.cbpeh.bpd.servicio.ComunicadoServicio;
 import mx.gob.cbpeh.bpd.servicio.DirectorioService;
 import mx.gob.cbpeh.bpd.servicio.ExpedienteIncompetenciaServicio;
@@ -80,9 +81,11 @@ import mx.gob.cbpeh.bpd.servicio.UsuarioServicio;
 
 @Controller
 public class GerenciaController {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(AtencionCiudadanaControlador.class);
-	
+
+	@Autowired
+	ColaboracionServicio colaboracionServicio;
 	@Autowired
 	PersonaReportaServicio personaReportante;
 	@Autowired
@@ -178,7 +181,7 @@ public class GerenciaController {
 	@Autowired
 	CatCompaniaTelefonoServicio companiaTelefonoServicio;
 	@Autowired
-	PersonaReportaServicio personaReportaServicio;	
+	PersonaReportaServicio personaReportaServicio;
 	@Autowired
 	PersonaIncompetenciaServicio personaIncompetenciaServicios;
 	@Autowired
@@ -203,17 +206,16 @@ public class GerenciaController {
 	private CatLugarBusquedaServicio catLugarBusquedaServicio;
 	@Autowired
 	DirectorioService directorioService;
-	
+
 	@GetMapping
 	@RequestMapping(value = "/gerencia")
-	private ModelAndView showUserView(@RequestParam Map<String, String> reqParam) throws ResourceNotFoundException, JsonProcessingException {
+	private ModelAndView showUserView(@RequestParam Map<String, String> reqParam)
+			throws ResourceNotFoundException, JsonProcessingException {
 
 		ModelAndView mav = new ModelAndView("template");
-		LOG.info("Ingreso al controller de /gerencia ");		
-		
-		String expedienteConsul  = reqParam.get("idExpediente");
+		String expedienteConsul = reqParam.get("idExpediente");
 		mav.addObject("expedienteConsul", expedienteConsul);
-		
+
 		mav.addObject("companiaTel", companiaTelefonoServicio.getCatCompaniaTelefonos());
 		mav.addObject("parentesco", parentescoServicio.getCatParentescos());
 		mav.addObject("areas", areaServicio.getCatAreas());
@@ -255,55 +257,55 @@ public class GerenciaController {
 		mav.addObject("estatus", estatusEconomicosServicio.getCatEstatusEconomicos());
 		mav.addObject("transportes", transporteServicio.getCatTransportes());
 		mav.addObject("grupos", etnicoServicio.getCatGrupoEtnicos());
-		
+
 		List<CatMunicipio> munHidalgo = catMunicipioServicio.getCatMunicipiosPorEstado("13");
-		mav.addObject("municipiosHidalgo", munHidalgo);		
+		mav.addObject("municipiosHidalgo", munHidalgo);
 		mav.addObject("estatusLocalizado", catEstatusLocalizadoServicio.getCatEstatusLocalizados());
-		
+		mav.addObject("colaboraciones", colaboracionServicio.getColaboracion());
 		mav.addObject("instituciones", catInstitucionServicio.getCatInstitucion());
 		mav.addObject("estatusColaboracion", catEstatusColaboracionServicio.getCatEstatusColaboracions());
 		mav.addObject("lugaresBusqueda", catLugarBusquedaServicio.getCatLugarBusqueda());
 		mav.addObject("aniosExpedientes", expedienteServicios.obtenerAniosExpedientes());
-		
+
 		mav.addObject("asociacionesHidalgo", directorioService.getAsociacionesHidalgo());
 		mav.addObject("busquedaInmediata", directorioService.getBusquedaInmediatas());
 		mav.addObject("centroRehabilitacion", directorioService.getCentrosRehabilitacion());
 		mav.addObject("comisionEstatal", directorioService.getComisionesEstatales());
-		
+
 		CatTipoComunicado catTipoComunicado = new CatTipoComunicado();
-		
+
 		catTipoComunicado.setIdTipoComunicado(2);
 		ComunicadosDto comunicadosDto = new ComunicadosDto();
 		List<Comunicado> comunicados = comunicadoServicio.getComunicados(catTipoComunicado);
-		 
-		 for(Comunicado comunicado2: comunicados) {			 
+
+		for (Comunicado comunicado2 : comunicados) {
 			Comunicado2 comunicado22 = new Comunicado2();
-            comunicado22.setIdComunicado(comunicado2.getIdComunicado());
-            comunicado22.setTitulo(comunicado2.getTitulo());
-            comunicado22.setDescripcion(comunicado2.getDescripcion());
-            comunicado22.setUrl(comunicado2.getUrl());
-            comunicado22.setImagen(comunicado2.getImagen());
-            comunicado22.setImagenDetalle(comunicado2.getImagen().toString());            
-            comunicadosDto.getComunicados().add(comunicado22);
+			comunicado22.setIdComunicado(comunicado2.getIdComunicado());
+			comunicado22.setTitulo(comunicado2.getTitulo());
+			comunicado22.setDescripcion(comunicado2.getDescripcion());
+			comunicado22.setUrl(comunicado2.getUrl());
+			comunicado22.setImagen(comunicado2.getImagen());
+			comunicado22.setImagenDetalle(comunicado2.getImagen().toString());
+			comunicadosDto.getComunicados().add(comunicado22);
 		}
-				   
-		//Object mapper instance
-		ObjectMapper mapper = new ObjectMapper();	   
-		//Convert POJO to JSON
-		String json = mapper.writeValueAsString(comunicadosDto);		  
+
+		// Object mapper instance
+		ObjectMapper mapper = new ObjectMapper();
+		// Convert POJO to JSON
+		String json = mapper.writeValueAsString(comunicadosDto);
 		// model.addObject("comunicadosCarrusel", comunicado.getComunicados());
-		mav.addObject("json", json);		
+		mav.addObject("json", json);
 		mav.addObject("nameUser", getNameUser());
-		mav.addObject("tipo", 6);	// 6 comisionado	
+		mav.addObject("tipo", 6); // 6 comisionado
 		mav.addObject("escolaridad", catEscolaridadServicio.getCatEscolaridad());
 		mav.addObject("tipoIdentificacion", catTipoIdentificacionServicio.getCatTipoIdentificacion());
 		mav.addObject("gradoEstudios", catGradoEstudioServicio.getCatGradoEstudio());
-		mav.addObject("idiomas", catIdiomaServicio.getCatIdiomas());		
-		mav.addObject("municipios", catMunicipioServicio.getCatMunicipiosPorEstado("13"));// estado 13 hidalgo			
-		mav.addObject("estados", catEstadoServicio.getCatEstados());		
+		mav.addObject("idiomas", catIdiomaServicio.getCatIdiomas());
+		mav.addObject("municipios", catMunicipioServicio.getCatMunicipiosPorEstado("13"));// estado 13 hidalgo
+		mav.addObject("estados", catEstadoServicio.getCatEstados());
 		return mav;
 	}
-	
+
 	private String getNameUser() {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -6,8 +6,8 @@
 %>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
  	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="<%=request.getContextPath()%>/recursos/vendor/jquery/jquery.min.js"></script>
 	
@@ -29,7 +29,8 @@
     <script type="text/javascript">pathGlobal = "<%=request.getContextPath()%>";</script>
 <meta http-equiv="X-UA-Compatible" content="IE=chrome">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>#hidalgobuscacontigo</title>
+<title>Hidalgo Busca Contigo</title>
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/recursos/img/icons/favicon.ico"/>
 <!-- Custom fonts for this template-->
 <link href="<%=request.getContextPath()%>/recursos/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 <link href="<%=request.getContextPath()%>/recursos/vendor/bootstrap/scss/carousel.css" rel="stylesheet">
