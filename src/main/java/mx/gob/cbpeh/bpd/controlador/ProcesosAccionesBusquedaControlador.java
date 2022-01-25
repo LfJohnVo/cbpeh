@@ -289,63 +289,9 @@ private static final Logger log = LoggerFactory.getLogger(AccionesBusquedaContro
 		
 		try {
 			log.info("entro al metodo buscarColaboracion");
-			Colaboracion colaboracion = new Colaboracion();
-			
-			if(null != numPeticion && !numPeticion.equals("")) {
-				colaboracion.setNumeroOfficioPeticion(numPeticion.toUpperCase());
-			}
-			if(null != fechaPeticion && !fechaPeticion.equals("")) {
-				colaboracion.setFechaPeticion(java.sql.Date.valueOf(fechaPeticion ));
-			}
-			if(null != solColaboracion && !solColaboracion.equals("")) {
-				
-				Optional<CatInstitucion> optional =catInstitucionServicio.getCatInstitucion(solColaboracion);
-				institucion =optional.get();
-				colaboracion.setCatInstitucion(institucion);				
-			}
-			colaboracion.setFirmadoPor(nombreFirma.toUpperCase());
-			colaboracion.setNombre(nombres);
-			if(null != aPaterno && !aPaterno.equals("")) {
-				colaboracion.setApaterno(aPaterno.toUpperCase());				
-			}
-			if(null != aMaterno && !aMaterno.equals("")) {
-				colaboracion.setAmaterno(aMaterno.toUpperCase());				
-			}		
 			
 			
-			CatEstatusColaboracion estatus = new CatEstatusColaboracion();
-			estatus.setIdEstatusColaboracion(estatusColaboracion);
-			colaboracion.setCatEstatusColaboracion(estatus);
 			
-			
-			colaboracion.setFechaAlta(new Date());
-			colaboracion.setUsuarioAlta(getNameUser());
-			colaboracion.setEstatusExpedienteColaboracion(1);
-			folio = colaboracionServicio.getFolioColaboracion(institucion.getAbreviaturaInstitucion(), util.getIniciales(nombres,aPaterno,aMaterno));
-			colaboracion.setIdExpedienteColaboracion(folio);
-			colaboracion=colaboracionServicio.saveColaboracion(colaboracion);
-			if(colaboracion!= null && colaboracion.getIdExpedienteColaboracion() != null ) {
-				if(lugaresBusqueda.size() >0) {
-					for(Integer idLugar:lugaresBusqueda) {
-						ColaboracionLugarBusqueda colaboracionLugar = new ColaboracionLugarBusqueda();
-						ColaboracionLugarBusquedaPK llave = new ColaboracionLugarBusquedaPK();
-						
-						llave.setIdExpedienteColaboracion(colaboracion.getIdExpedienteColaboracion());
-						llave.setIdLugarBusqueda(idLugar);
-						colaboracionLugar.setId(llave);
-						
-						CatLugarBusqueda lugar = new CatLugarBusqueda();
-						lugar.setIdLugarBusqueda(idLugar);
-						
-						colaboracionLugar.setCatLugarBusqueda(lugar);
-						colaboracionLugar.setColaboracion(colaboracion);
-						colaboracionLugar.setIdEstatus(1);
-						colaboracionLugarBusquedaServicio.saveColaboracionLugarBusqueda(colaboracionLugar);					
-					}					
-				}			
-				commonResponse.setEstatus(1);
-				commonResponse.setDescripcion("Se registro la colaboracion con folio:"+ folio);				
-			}
 		}catch(Exception e) {
 			log.error("Ocurrio un inconveniente al buscar colaboración:"+e.getMessage());
 			return new ResponseEntity<>(commonResponse, HttpStatus.OK);
