@@ -2,9 +2,9 @@
 <%@page import="mx.gob.cbpeh.bpd.modelo.CatInstitucion"%>
 <%@page import="mx.gob.cbpeh.bpd.modelo.CatEstatusColaboracion"%>
 <%@page import="java.util.List"%>
-<%-- 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" isELIgnored="false" %> --%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" isELIgnored="false" %>
 <%
 	HttpSession session2 = request.getSession();
 	List<Colaboracion> colaboraciones = (List<Colaboracion>)session2.getAttribute("colaboraciones");
