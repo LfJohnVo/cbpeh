@@ -179,7 +179,7 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 		</form>
 	</div>
 	<div class="tab-pane" id="tabs-2" role="tabpanel">
-		<form enctype="multipart/form-data" id="formColaboracion"
+		<form enctype="multipart/form-data" id="formColaboracionBuscar"
 			method="post">
 			<div class="form-group row">
 				<div class="col-lg-4 col-md-12">
@@ -217,7 +217,7 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 							<button type="submit" class="btn btn-primary">Guardar</button>
 						</div>
 						<div class="p-3">
-							<button type="button" onclick="resetColaboracion()"
+							<button type="button" onclick="resetColaboracionBuscar()"
 								class="btn btn-primary">Limpiar</button>
 						</div>
 					</div>

@@ -67,6 +67,43 @@ function guardarColaboracion(event) {
 	});            
 }
 
+$(function() {
+	$('#formColaboracionBuscar').on('submit', BuscarColaboracion);
+});
+
+var arrayLugares = [];
+
+function BuscarColaboracion(event) {
+	event.stopPropagation();
+	event.preventDefault();
+	
+	var form = document.getElementById('formColaboracionBuscar');
+	var formData = new FormData(form);
+	formData.set("lugaresBusqueda",arrayLugares);
+	
+	$.ajax({
+		url :  'accionesbusqueda/buscar-colaboracion',
+		type : 'POST',
+		data : formData,
+		cache : false,
+		dataType : 'json',
+		processData : false,
+		contentType : false,
+		success : function(data, textStatus, jqXHR) {
+			if(data.estatus ===1){
+				monstrarAlerta({message: data.descripcion, class:"info"});
+				document.getElementById("formColaboracionBuscar").reset();
+				$('.custom-select').val('').trigger('change'); // Reset Select2
+			}else if(data.estatus ===-3){
+				monstrarAlerta({message: data.descripcion, class:"danger"});
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			monstrarAlerta({message:"Ocurrio un inconveniente al realizar la peticion", class:"danger"});
+		}
+	});            
+}
+
 // Colaboracion
 function exportPdfColaboracion(){
 	let numPeticion = document.getElementById("numPeticion").value;
@@ -98,6 +135,12 @@ function changeInputCol(val) {
 
 function resetColaboracion(){
 	document.getElementById("formColaboracion").reset();
+	$('.custom-select').val('').trigger('change'); // Se resetea también select2
+	$("#btnExportarColaboracion").prop("disabled", true);
+}
+
+function resetColaboracionBuscar(){
+	document.getElementById("formColaboracionBuscar").reset();
 	$('.custom-select').val('').trigger('change'); // Se resetea también select2
 	$("#btnExportarColaboracion").prop("disabled", true);
 }
