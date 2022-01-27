@@ -533,4 +533,42 @@ public class ProcesosAccionesBusquedaControlador {
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
+	@SuppressWarnings("unused")
+	@RequestMapping(value = "/exportar-busqueda-larga-data", method = RequestMethod.GET)
+	public @ResponseBody String exportarBusquedaLargaData(HttpServletRequest request,
+			HttpServletResponse response, String mesBusquedaLD, String yearBusquedaLD) {
+		String json = null, msg = null;
+		File fileInd = null;
+		response.setContentType("APPLICATION/json"); // en caso de error
+
+		try {
+			fileInd = consultaService.generarBusquedaLargaData(mesBusquedaLD, yearBusquedaLD);
+			if (fileInd != null) {
+
+				String fecha = Utils.dateToString(new Date(), "ddMMyyyy hh:mm");
+				response.setContentType("APPLICATION/OCTET-STREAM");
+				response.addHeader("Content-Disposition",
+						"attachment; filename=BusquedaLargaData_" + fecha + ".xls");
+				byte[] byteArray = FileUtils.readFileToByteArray(fileInd);
+				BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+				bos.write(byteArray);
+				bos.flush();
+				bos.close();
+				log.info("exportacion correcta");
+			} else {
+				msg = "La informacion no se exporto correctamente";
+				log.info(msg);
+				json = "{" + msg + "}";
+			}
+			if (fileInd != null && fileInd.exists()) {
+				fileInd.delete();
+				log.info("Archivo eliminado Xls de tomcat.");
+			}
+		} catch (Exception e) {
+			msg = "Ocurrio un inconveniente al exportar el concentrado de larga data:" + e.getMessage();
+			json = "{" + msg + "}";
+		}
+		return null;
+	}
 }

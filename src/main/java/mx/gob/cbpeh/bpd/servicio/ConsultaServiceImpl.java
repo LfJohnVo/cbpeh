@@ -491,4 +491,70 @@ public class ConsultaServiceImpl implements ConsultaService {
 		return path;
 	}
 
+	@Override
+	public File generarBusquedaLargaData(String mesBusquedaLD, String yearBusquedaLD) {
+		List<BusquedaLargaDataConcentradoDto> lista = null;
+		lista = busquedaLargaData(mesBusquedaLD, yearBusquedaLD);
+		if (lista != null) {
+			log.info("Generando Excel rows:" + lista.size());
+			try {
+				Workbook libroTrabajo = new HSSFWorkbook();
+				// new HSSFWorkbook() for generating `.xls` file
+				Sheet hoja = libroTrabajo.createSheet("Larga Data");
+
+				if (libroTrabajo instanceof HSSFWorkbook) {
+					((HSSFWorkbook) libroTrabajo).createInformationProperties();
+					((HSSFWorkbook) libroTrabajo).getSummaryInformation().setAuthor("By Greck alg2299");
+				}
+
+				Font fuenteCabecera = libroTrabajo.createFont(); // Creando fuente para la cabeceras
+				fuenteCabecera.setBold(true);
+				fuenteCabecera.setFontHeightInPoints((short) 12);
+				fuenteCabecera.setColor(IndexedColors.OLIVE_GREEN.getIndex());
+
+				CellStyle estiloCabeceraCelda = libroTrabajo.createCellStyle(); // creando estilo para las celdas
+				estiloCabeceraCelda.setFont(fuenteCabecera);
+				estiloCabeceraCelda.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+				// estiloCabeceraCelda.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+				Row filaCabecera = hoja.createRow(1); // Creando fila para cabeceras
+				int rowNum = 2;
+
+				String[] columnasC1 = { "BUSQUEDA", "FECHA", "ESTATUS", "MUNICIPIO", "CODIGO POSTAL", "COLONIA",
+						"CALLE", "LATITUD", "LONGITUD" };
+				for (int i = 0; i < columnasC1.length; i++) { // Creando cabeceras
+					Cell cell = filaCabecera.createCell(i + 1);
+					cell.setCellValue(columnasC1[i]);
+					cell.setCellStyle(estiloCabeceraCelda);
+				}
+				for (BusquedaLargaDataConcentradoDto indicador : lista) { // Llenado celdas con datos
+					Row filaDatos = hoja.createRow(rowNum++);
+					filaDatos.createCell(1).setCellValue(indicador.getIdBusquedaLargaData());
+					filaDatos.createCell(2).setCellValue(indicador.getFechaBusqueda().toString());
+					filaDatos.createCell(3).setCellValue(indicador.getEstatusLocalizado());
+					filaDatos.createCell(4).setCellValue(indicador.getMunicipio());
+					filaDatos.createCell(5).setCellValue(indicador.getCp());
+					filaDatos.createCell(6).setCellValue(indicador.getColonia());
+					filaDatos.createCell(7).setCellValue(indicador.getCalle());
+					filaDatos.createCell(8).setCellValue(String.valueOf(indicador.getLatitud()));
+					filaDatos.createCell(9).setCellValue(String.valueOf(indicador.getLongitud()));
+				}
+				for (int i = 1; i < columnasC1.length + 1; i++) { // auto ajustar la celda al contenido
+					hoja.autoSizeColumn(i);
+				}
+				File file = new File(getRuta());
+				FileOutputStream archivoSalida = new FileOutputStream(file);
+
+				libroTrabajo.write(archivoSalida);
+				archivoSalida.close();
+
+				libroTrabajo.close();
+				return file;
+			} catch (Exception e) {
+				log.info("Ocurrio un inconveniente al generar excel," + e.getMessage());
+			}
+		}
+		return null;
+	}
+
 }

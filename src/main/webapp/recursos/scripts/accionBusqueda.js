@@ -359,12 +359,10 @@ function initBusquedaLargaData() {
 }
 
 function exportarBusquedaLargaData() {
-	var idExpedienteColaboracion = document.getElementById("idExpedienteColaboracion").value;
-	var fechaPeticion = document.getElementById("fechaPeticion").value;
-	var idInstitucion = document.getElementById("idInstitucion").value;
-	var idEstatusColaboracion = document.getElementById("idEstatusColaboracion").value;
-	var data = 'idExpedienteColaboracion=' + idExpedienteColaboracion + "&fechaPeticion=" + fechaPeticion + "&idInstitucion=" + idInstitucion + "&idEstatusColaboracion=" + idEstatusColaboracion;
-	let uriExport = "accionesbusqueda/exportar-concentrado-colaboraciones?" + data;
+	var mesBusquedaLD = document.getElementById("mesBusquedaLD").value;
+	var yearBusquedaLD = document.getElementById("yearBusquedaLD").value;
+	var data = 'mesBusquedaLD=' + mesBusquedaLD + "&yearBusquedaLD=" + yearBusquedaLD;
+	let uriExport = "accionesbusqueda/exportar-busqueda-larga-data?" + data;
 	//const url = URL.createObjectURL();
 	const a = document.createElement('a');
 	a.href = uriExport;
