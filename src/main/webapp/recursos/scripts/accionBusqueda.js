@@ -304,6 +304,72 @@ function exportarColaboraciones() {
 	a.href = uriExport;
 	a.click();
 }
+function busquedaLargaData() {
+	var mesBusquedaLD = document.getElementById("mesBusquedaLD").value;
+	var yearBusquedaLD = document.getElementById("yearBusquedaLD").value;
+	var data = 'mesBusquedaLD=' + mesBusquedaLD + "&yearBusquedaLD=" + yearBusquedaLD;
+	$.ajax({
+		url: "accionesbusqueda/buscar-busqueda-larga-data",
+		type: 'GET',
+		data: data,
+		success: function (data) {
+			$("#bodyBusquedaLargaData").html("");
+			var bodyTabla = $("#bodyBusquedaLargaData");
+
+			if (data.estatus === 1) {
+				$.each(data.elementos, function (index, elemento) {
+					var html = `
+						<tr>
+							<td><a href="#">${elemento.idBusquedaLargaData}</a></td>
+							<td>${elemento.fechaBusqueda}</td>
+							<td>${elemento.estatusLocalizado}</td>
+							<td>${elemento.municipio}</td>
+							<td>${elemento.cp}</td>
+							<td>${elemento.colonia}</td>
+							<td>${elemento.calle}</td>
+							<td>${elemento.latitud}</td>
+							<td>${elemento.longitud}</td>
+						</tr>
+					`;
+					bodyTabla.append(html);
+				});
+				$("#btnExportarBusquedaLargaData").prop("disabled", false);
+			} else if (data.estatus === 2) {
+				limpiarTablaBusquedaLargaData();
+				monstrarAlerta({ message: data.descripcion, class: "info" });
+			} else if (data.estatus === -3) {
+				limpiarTablaBusquedaLargaData();
+				monstrarAlerta({ message: data.descripcion, class: "danger" });
+			}
+		},
+		error: function () {
+			monstrarAlerta({ message: "No se ha podido obtener la informacion", class: "danger" });
+		}
+	});
+}
+function limpiarTablaBusquedaLargaData() {
+	document.getElementById("formConcentradoLargaData").reset();
+	$('.custom-select').val('').trigger('change'); // Se resetea también select2
+	$('#bodyBusquedaLargaData').html("");
+	initColaboraciones();
+}
+
+function initBusquedaLargaData() {
+	$("#btnExportarBusquedaLargaData").prop("disabled", true);
+}
+
+function exportarBusquedaLargaData() {
+	var idExpedienteColaboracion = document.getElementById("idExpedienteColaboracion").value;
+	var fechaPeticion = document.getElementById("fechaPeticion").value;
+	var idInstitucion = document.getElementById("idInstitucion").value;
+	var idEstatusColaboracion = document.getElementById("idEstatusColaboracion").value;
+	var data = 'idExpedienteColaboracion=' + idExpedienteColaboracion + "&fechaPeticion=" + fechaPeticion + "&idInstitucion=" + idInstitucion + "&idEstatusColaboracion=" + idEstatusColaboracion;
+	let uriExport = "accionesbusqueda/exportar-concentrado-colaboraciones?" + data;
+	//const url = URL.createObjectURL();
+	const a = document.createElement('a');
+	a.href = uriExport;
+	a.click();
+}
 //Acciones Busqueda
 function exportPdfAcciones() {
 	let idExpedienteNombrePdf = document.getElementById("numExpedienteAb").value;

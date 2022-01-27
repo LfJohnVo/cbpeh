@@ -51,6 +51,9 @@ $(document).ready(function () {
 	$("#mConcentradoColaboraciones").click(function () {
 		$("#container-fluid").load(pathGlobal + "/vistas/concentradoColaboraciones.jsp");
 	});
+	$("#mConcentradoLargaData").click(function () {
+		$("#container-fluid").load(pathGlobal + "/vistas/concentradoLargaData.jsp");
+	});
 	$("#mregistroDiariodeBusqueda").click(function () {
 		$("#container-fluid").load(pathGlobal + "/vistas/registroDiariodeBusqueda.jsp");
 	});

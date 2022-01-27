@@ -8,11 +8,13 @@ import mx.gob.cbpeh.bpd.modelo.ArchivoLargaData;
 
 public interface ArchivoLargaDataServicio {
 
-    public List < ArchivoLargaData > getCArchivoLargaData();
+    public List<ArchivoLargaData> getCArchivoLargaData();
+
+    public List<Integer> getYearsLargaData();
 
     public void saveArchivoLargaData(ArchivoLargaData archivo);
 
-    public Optional<ArchivoLargaData>  getArchivoLargaData(int idArchivoLargaData) throws ResourceNotFoundException;
+    public Optional<ArchivoLargaData> getArchivoLargaData(int idArchivoLargaData) throws ResourceNotFoundException;
 
     public void deleteArchivoLargaData(int idArchivoLargaData) throws ResourceNotFoundException;
 }

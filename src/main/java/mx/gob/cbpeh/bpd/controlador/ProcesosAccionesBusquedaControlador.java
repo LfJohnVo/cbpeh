@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import mx.gob.cbpeh.bpd.dto.BusquedaLargaDataConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.CommonRequest;
 import mx.gob.cbpeh.bpd.dto.CommonResponse;
@@ -505,5 +506,31 @@ public class ProcesosAccionesBusquedaControlador {
 			json = "{" + msg + "}";
 		}
 		return null;
+	}
+
+	@RequestMapping(value = "/buscar-busqueda-larga-data", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<CommonResponseListElement<BusquedaLargaDataConcentradoDto>> buscarBusquedaLargaData(
+			@RequestParam("mesBusquedaLD") String mesBusquedaLD,
+			@RequestParam("yearBusquedaLD") String yearBusquedaLD) {
+		List<BusquedaLargaDataConcentradoDto> largaDatas = new ArrayList<BusquedaLargaDataConcentradoDto>();
+		CommonResponseListElement<BusquedaLargaDataConcentradoDto> response = new CommonResponseListElement<BusquedaLargaDataConcentradoDto>();
+		response.setDescripcion("Se genero un inconveniente al buscar la informacion.");
+		response.setEstatus(-3);
+		try {
+			largaDatas = consultaService.busquedaLargaData(mesBusquedaLD, yearBusquedaLD);
+			response.setDescripcion(String.valueOf(largaDatas.size()));
+			if (largaDatas.size() == 0) {
+				response.setEstatus(2);
+				response.setDescripcion("No se encontraron registros.");
+				response.setElementos(largaDatas);
+			} else if (largaDatas.size() > 0) {
+				response.setEstatus(1);
+				response.setDescripcion("OK");
+				response.setElementos(largaDatas);
+			}
+		} catch (Exception e) {
+			log.error("Inconveniente al consultar larga data:" + e.getMessage());
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

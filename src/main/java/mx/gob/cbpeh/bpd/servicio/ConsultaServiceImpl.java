@@ -28,6 +28,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import mx.gob.cbpeh.bpd.dto.BusquedaLargaDataConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ConsultaConcentradoDto;
@@ -230,6 +231,57 @@ public class ConsultaServiceImpl implements ConsultaService {
 							(String) result[5],
 							(String) result[6],
 							(String) result[9]))
+					.collect(Collectors.toList());
+		}
+		return registros;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<BusquedaLargaDataConcentradoDto> busquedaLargaData(String mesBusquedaLD, String yearBusquedaLD) {
+		List<Object[]> results = new ArrayList<Object[]>();
+		List<BusquedaLargaDataConcentradoDto> registros = new ArrayList<BusquedaLargaDataConcentradoDto>();
+		StringBuilder queryStr = new StringBuilder(
+				"SELECT bld.id_busqueda_larga_data,bld.fecha_busqueda,catel.estatus_localizado_detalle,catm.municipio_detalle,catcp.codigo_cp,catcol.colonia_detalle,bld.calle,bld.latitud,bld.longitud "
+						+ "FROM busqueda_larga_data AS bld "
+						+ "INNER JOIN cat_estatus_localizado AS catel ON bld.id_estatus_localizado = catel.id_estatus_localizado "
+						+ "INNER JOIN cat_municipio AS catm ON bld.id_municipio = catm.id_municipio "
+						+ "INNER JOIN cat_cp AS catcp ON bld.id_cp = catcp.id_cp "
+						+ "INNER JOIN cat_colonia AS catcol ON bld.id_colonia = catcol.id_colonia");
+
+		queryStr.append((mesBusquedaLD != null && !mesBusquedaLD.equals(""))
+				? " AND MONTH(bld.fecha_busqueda) = :mesBusquedaLD"
+				: "");
+		queryStr.append((yearBusquedaLD != null && !yearBusquedaLD.equals(""))
+				? " AND YEAR(bld.fecha_busqueda) = :yearBusquedaLD"
+				: "");
+		queryStr.append(" ORDER BY bld.id_busqueda_larga_data DESC");
+
+		Query nativeQueray = em.createNativeQuery(queryStr.toString());
+
+		if (mesBusquedaLD != null && !mesBusquedaLD.equals("")) {
+			nativeQueray.setParameter("mesBusquedaLD", mesBusquedaLD);
+		}
+		if (yearBusquedaLD != null && !yearBusquedaLD.equals("")) {
+			nativeQueray.setParameter("yearBusquedaLD", yearBusquedaLD);
+		}
+
+		results = nativeQueray.getResultList();
+		log.info("tamanio Reg Diario:" + results.toString());
+
+		if (results.size() > 0) {
+			registros = results
+					.stream()
+					.map(result -> new BusquedaLargaDataConcentradoDto(
+							(String) result[0],
+							(String) result[1].toString(),
+							(String) result[2],
+							(String) result[3],
+							(String) result[4],
+							(String) result[5],
+							(String) result[6],
+							(String) String.valueOf(result[7]),
+							(String) String.valueOf(result[8])))
 					.collect(Collectors.toList());
 		}
 		return registros;

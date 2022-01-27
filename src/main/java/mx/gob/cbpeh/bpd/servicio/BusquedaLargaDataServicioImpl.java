@@ -12,7 +12,7 @@ import mx.gob.cbpeh.bpd.repositorio.BusquedaLargaDataRepositorio;
 
 @Service
 public class BusquedaLargaDataServicioImpl implements BusquedaLargaDataServicio {
-	
+
 	@Autowired
 	private BusquedaLargaDataRepositorio busquedaLargaDataRepositorio;
 
@@ -26,20 +26,25 @@ public class BusquedaLargaDataServicioImpl implements BusquedaLargaDataServicio 
 	@Transactional
 	public void saveBusquedaLargaData(BusquedaLargaData busquedaLargaData) {
 		busquedaLargaDataRepositorio.save(busquedaLargaData);
-		
+
 	}
 
 	@Override
 	@Transactional
 	public Optional<BusquedaLargaData> getBusquedaLargaData(int idBusquedaLargaData) throws ResourceNotFoundException {
-		return  busquedaLargaDataRepositorio.findById(idBusquedaLargaData);
+		return busquedaLargaDataRepositorio.findById(idBusquedaLargaData);
 	}
 
 	@Override
 	@Transactional
 	public void deleteBusquedaLargaData(int idBusquedaLargaData) throws ResourceNotFoundException {
 		busquedaLargaDataRepositorio.deleteById(idBusquedaLargaData);
-		
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Integer> getYearsLargaData() {
+		return busquedaLargaDataRepositorio.getAllYears();
 	}
 
 }
