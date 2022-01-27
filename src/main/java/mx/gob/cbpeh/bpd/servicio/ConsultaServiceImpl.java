@@ -28,6 +28,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import mx.gob.cbpeh.bpd.dto.BusquedaLargaDataConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ConsultaConcentradoDto;
@@ -235,6 +236,57 @@ public class ConsultaServiceImpl implements ConsultaService {
 		return registros;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<BusquedaLargaDataConcentradoDto> busquedaLargaData(String mesBusquedaLD, String yearBusquedaLD) {
+		List<Object[]> results = new ArrayList<Object[]>();
+		List<BusquedaLargaDataConcentradoDto> registros = new ArrayList<BusquedaLargaDataConcentradoDto>();
+		StringBuilder queryStr = new StringBuilder(
+				"SELECT bld.id_busqueda_larga_data,bld.fecha_busqueda,catel.estatus_localizado_detalle,catm.municipio_detalle,catcp.codigo_cp,catcol.colonia_detalle,bld.calle,bld.latitud,bld.longitud "
+						+ "FROM busqueda_larga_data AS bld "
+						+ "INNER JOIN cat_estatus_localizado AS catel ON bld.id_estatus_localizado = catel.id_estatus_localizado "
+						+ "INNER JOIN cat_municipio AS catm ON bld.id_municipio = catm.id_municipio "
+						+ "INNER JOIN cat_cp AS catcp ON bld.id_cp = catcp.id_cp "
+						+ "INNER JOIN cat_colonia AS catcol ON bld.id_colonia = catcol.id_colonia");
+
+		queryStr.append((mesBusquedaLD != null && !mesBusquedaLD.equals(""))
+				? " AND MONTH(bld.fecha_busqueda) = :mesBusquedaLD"
+				: "");
+		queryStr.append((yearBusquedaLD != null && !yearBusquedaLD.equals(""))
+				? " AND YEAR(bld.fecha_busqueda) = :yearBusquedaLD"
+				: "");
+		queryStr.append(" ORDER BY bld.id_busqueda_larga_data DESC");
+
+		Query nativeQueray = em.createNativeQuery(queryStr.toString());
+
+		if (mesBusquedaLD != null && !mesBusquedaLD.equals("")) {
+			nativeQueray.setParameter("mesBusquedaLD", mesBusquedaLD);
+		}
+		if (yearBusquedaLD != null && !yearBusquedaLD.equals("")) {
+			nativeQueray.setParameter("yearBusquedaLD", yearBusquedaLD);
+		}
+
+		results = nativeQueray.getResultList();
+		log.info("tamanio Reg Diario:" + results.toString());
+
+		if (results.size() > 0) {
+			registros = results
+					.stream()
+					.map(result -> new BusquedaLargaDataConcentradoDto(
+							(String) result[0],
+							(String) result[1].toString(),
+							(String) result[2],
+							(String) result[3],
+							(String) result[4],
+							(String) result[5],
+							(String) result[6],
+							(String) String.valueOf(result[7]),
+							(String) String.valueOf(result[8])))
+					.collect(Collectors.toList());
+		}
+		return registros;
+	}
+
 	public File generarRegistrodiario(Integer anio, Integer mes, Integer idEstatus, String idExpedienten) {
 		List<RegistroDiarioDto> lista = null;
 		lista = buscarRegistroDiario(anio, mes, idEstatus, idExpedienten);
@@ -437,6 +489,72 @@ public class ConsultaServiceImpl implements ConsultaService {
 			path = env.getProperty("ruta.file.excel");
 		}
 		return path;
+	}
+
+	@Override
+	public File generarBusquedaLargaData(String mesBusquedaLD, String yearBusquedaLD) {
+		List<BusquedaLargaDataConcentradoDto> lista = null;
+		lista = busquedaLargaData(mesBusquedaLD, yearBusquedaLD);
+		if (lista != null) {
+			log.info("Generando Excel rows:" + lista.size());
+			try {
+				Workbook libroTrabajo = new HSSFWorkbook();
+				// new HSSFWorkbook() for generating `.xls` file
+				Sheet hoja = libroTrabajo.createSheet("Larga Data");
+
+				if (libroTrabajo instanceof HSSFWorkbook) {
+					((HSSFWorkbook) libroTrabajo).createInformationProperties();
+					((HSSFWorkbook) libroTrabajo).getSummaryInformation().setAuthor("By Greck alg2299");
+				}
+
+				Font fuenteCabecera = libroTrabajo.createFont(); // Creando fuente para la cabeceras
+				fuenteCabecera.setBold(true);
+				fuenteCabecera.setFontHeightInPoints((short) 12);
+				fuenteCabecera.setColor(IndexedColors.OLIVE_GREEN.getIndex());
+
+				CellStyle estiloCabeceraCelda = libroTrabajo.createCellStyle(); // creando estilo para las celdas
+				estiloCabeceraCelda.setFont(fuenteCabecera);
+				estiloCabeceraCelda.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+				// estiloCabeceraCelda.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+				Row filaCabecera = hoja.createRow(1); // Creando fila para cabeceras
+				int rowNum = 2;
+
+				String[] columnasC1 = { "BUSQUEDA", "FECHA", "ESTATUS", "MUNICIPIO", "CODIGO POSTAL", "COLONIA",
+						"CALLE", "LATITUD", "LONGITUD" };
+				for (int i = 0; i < columnasC1.length; i++) { // Creando cabeceras
+					Cell cell = filaCabecera.createCell(i + 1);
+					cell.setCellValue(columnasC1[i]);
+					cell.setCellStyle(estiloCabeceraCelda);
+				}
+				for (BusquedaLargaDataConcentradoDto indicador : lista) { // Llenado celdas con datos
+					Row filaDatos = hoja.createRow(rowNum++);
+					filaDatos.createCell(1).setCellValue(indicador.getIdBusquedaLargaData());
+					filaDatos.createCell(2).setCellValue(indicador.getFechaBusqueda().toString());
+					filaDatos.createCell(3).setCellValue(indicador.getEstatusLocalizado());
+					filaDatos.createCell(4).setCellValue(indicador.getMunicipio());
+					filaDatos.createCell(5).setCellValue(indicador.getCp());
+					filaDatos.createCell(6).setCellValue(indicador.getColonia());
+					filaDatos.createCell(7).setCellValue(indicador.getCalle());
+					filaDatos.createCell(8).setCellValue(String.valueOf(indicador.getLatitud()));
+					filaDatos.createCell(9).setCellValue(String.valueOf(indicador.getLongitud()));
+				}
+				for (int i = 1; i < columnasC1.length + 1; i++) { // auto ajustar la celda al contenido
+					hoja.autoSizeColumn(i);
+				}
+				File file = new File(getRuta());
+				FileOutputStream archivoSalida = new FileOutputStream(file);
+
+				libroTrabajo.write(archivoSalida);
+				archivoSalida.close();
+
+				libroTrabajo.close();
+				return file;
+			} catch (Exception e) {
+				log.info("Ocurrio un inconveniente al generar excel," + e.getMessage());
+			}
+		}
+		return null;
 	}
 
 }

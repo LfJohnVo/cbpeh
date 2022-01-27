@@ -11,7 +11,7 @@ import mx.gob.cbpeh.bpd.repositorio.ArchivoLargaDataRepositorio;
 
 @Service
 public class ArchivoLargaDataServicioImpl implements ArchivoLargaDataServicio {
-	
+
 	@Autowired
 	private ArchivoLargaDataRepositorio archivoLargaDataRepositorio;
 
@@ -24,7 +24,7 @@ public class ArchivoLargaDataServicioImpl implements ArchivoLargaDataServicio {
 	@Override
 	@Transactional
 	public void saveArchivoLargaData(ArchivoLargaData archivo) {
-		archivoLargaDataRepositorio.save(archivo);		
+		archivoLargaDataRepositorio.save(archivo);
 	}
 
 	@Override
@@ -36,6 +36,13 @@ public class ArchivoLargaDataServicioImpl implements ArchivoLargaDataServicio {
 	@Override
 	@Transactional
 	public void deleteArchivoLargaData(int idArchivoLargaData) throws ResourceNotFoundException {
-		archivoLargaDataRepositorio.deleteById(idArchivoLargaData);		
+		archivoLargaDataRepositorio.deleteById(idArchivoLargaData);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Integer> getYearsLargaData() {
+		return archivoLargaDataRepositorio.getAllYears();
+	}
+
 }

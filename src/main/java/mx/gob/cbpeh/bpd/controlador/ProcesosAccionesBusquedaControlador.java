@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import mx.gob.cbpeh.bpd.dto.BusquedaLargaDataConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.CommonRequest;
 import mx.gob.cbpeh.bpd.dto.CommonResponse;
@@ -502,6 +503,70 @@ public class ProcesosAccionesBusquedaControlador {
 			}
 		} catch (Exception e) {
 			msg = "Ocurrio un inconveniente al exportar el concentrado de colaboraciones:" + e.getMessage();
+			json = "{" + msg + "}";
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/buscar-busqueda-larga-data", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<CommonResponseListElement<BusquedaLargaDataConcentradoDto>> buscarBusquedaLargaData(
+			@RequestParam("mesBusquedaLD") String mesBusquedaLD,
+			@RequestParam("yearBusquedaLD") String yearBusquedaLD) {
+		List<BusquedaLargaDataConcentradoDto> largaDatas = new ArrayList<BusquedaLargaDataConcentradoDto>();
+		CommonResponseListElement<BusquedaLargaDataConcentradoDto> response = new CommonResponseListElement<BusquedaLargaDataConcentradoDto>();
+		response.setDescripcion("Se genero un inconveniente al buscar la informacion.");
+		response.setEstatus(-3);
+		try {
+			largaDatas = consultaService.busquedaLargaData(mesBusquedaLD, yearBusquedaLD);
+			response.setDescripcion(String.valueOf(largaDatas.size()));
+			if (largaDatas.size() == 0) {
+				response.setEstatus(2);
+				response.setDescripcion("No se encontraron registros.");
+				response.setElementos(largaDatas);
+			} else if (largaDatas.size() > 0) {
+				response.setEstatus(1);
+				response.setDescripcion("OK");
+				response.setElementos(largaDatas);
+			}
+		} catch (Exception e) {
+			log.error("Inconveniente al consultar larga data:" + e.getMessage());
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@SuppressWarnings("unused")
+	@RequestMapping(value = "/exportar-busqueda-larga-data", method = RequestMethod.GET)
+	public @ResponseBody String exportarBusquedaLargaData(HttpServletRequest request,
+			HttpServletResponse response, String mesBusquedaLD, String yearBusquedaLD) {
+		String json = null, msg = null;
+		File fileInd = null;
+		response.setContentType("APPLICATION/json"); // en caso de error
+
+		try {
+			fileInd = consultaService.generarBusquedaLargaData(mesBusquedaLD, yearBusquedaLD);
+			if (fileInd != null) {
+
+				String fecha = Utils.dateToString(new Date(), "ddMMyyyy hh:mm");
+				response.setContentType("APPLICATION/OCTET-STREAM");
+				response.addHeader("Content-Disposition",
+						"attachment; filename=BusquedaLargaData_" + fecha + ".xls");
+				byte[] byteArray = FileUtils.readFileToByteArray(fileInd);
+				BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+				bos.write(byteArray);
+				bos.flush();
+				bos.close();
+				log.info("exportacion correcta");
+			} else {
+				msg = "La informacion no se exporto correctamente";
+				log.info(msg);
+				json = "{" + msg + "}";
+			}
+			if (fileInd != null && fileInd.exists()) {
+				fileInd.delete();
+				log.info("Archivo eliminado Xls de tomcat.");
+			}
+		} catch (Exception e) {
+			msg = "Ocurrio un inconveniente al exportar el concentrado de larga data:" + e.getMessage();
 			json = "{" + msg + "}";
 		}
 		return null;
