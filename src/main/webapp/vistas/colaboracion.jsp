@@ -184,18 +184,18 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 			<div class="form-group row">
 				<div class="col-lg-4 col-md-12">
 					<label for="numColaboracion">Número de oficio de petición</label> <input
-						type="text" class="form-control text-uppercase" id="numPeticion"
+						type="text" class="form-control text-uppercase" id="numPeticion1"
 						name="numPeticion" onchange="changeInputCol(this.value)">
 				</div>
 				<div class="col-lg-4 col-md-12">
 					<label for="fechaApertura">Fecha de petición</label> <input
-						type="date" class="form-control text-uppercase" id="fechaPeticion"
+						type="date" class="form-control text-uppercase" id="fechaPeticion1"
 						name="fechaPeticion">
 				</div>
 				<div class="col-lg-4 col-md-12">
 					<label for="solColaboracion">Solicitud de colaboración de</label> <select
-						class="custom-select d-block w-100" id="solColaboracion"
-						name="solColaboracion" required>
+						class="custom-select d-block w-100" id="solColaboracion1"
+						name="solColaboracion">
 						<option value="">Selecciona...</option>
 						<%
 						for (CatInstitucion institucion : instituciones) {
@@ -224,6 +224,20 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 				</div>
 			</div>
 		</form>
+		<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Número petición</th>
+            <th scope="col">Fecha petición</th>
+            <th scope="col">Expediente colaboración</th>
+            <th scope="col">Firmado Por</th>
+          </tr>
+        </thead>
+        <tbody id="bodyConcentrados">
+        </tbody>
+    </table>
+	</div>
 	</div>
 
 </div>
