@@ -227,7 +227,7 @@ public class AtencionCiudadanaControlador {
 	@Autowired
 	CatCompaniaTelefonoServicio companiaTelefonoServicio;
 	@Autowired
-	PersonaReportaServicio personaReportaServicio;	
+	PersonaReportaServicio personaReportaServicio;
 	@Autowired
 	PersonaIncompetenciaServicio personaIncompetenciaServicios;
 	@Autowired
@@ -242,14 +242,15 @@ public class AtencionCiudadanaControlador {
 	private ComunicadoServicio comunicadoServicio;
 
 	@GetMapping
-	private ModelAndView showUserView(@RequestParam Map<String, String> reqParam) throws ResourceNotFoundException, JsonProcessingException {
+	private ModelAndView showUserView(@RequestParam Map<String, String> reqParam)
+			throws ResourceNotFoundException, JsonProcessingException {
 
 		ModelAndView mav = new ModelAndView("template");
 		LOG.info("Ingreso al controller de /atencionciudadana ");
 
-		String expedienteConsul  = reqParam.get("idExpediente");
+		String expedienteConsul = reqParam.get("idExpediente");
 		mav.addObject("expedienteConsul", expedienteConsul);
-		
+
 		mav.addObject("companiaTel", companiaTelefonoServicio.getCatCompaniaTelefonos());
 		mav.addObject("parentesco", parentescoServicio.getCatParentescos());
 		mav.addObject("areas", areaServicio.getCatAreas());
@@ -295,39 +296,39 @@ public class AtencionCiudadanaControlador {
 		mav.addObject("municipiosHidalgo", munHidalgo);
 		mav.addObject("estatusLocalizado", catEstatusLocalizadoServicio.getCatEstatusLocalizados());
 		CatTipoComunicado catTipoComunicado = new CatTipoComunicado();
-		  catTipoComunicado.setIdTipoComunicado(2);
-		 ComunicadosDto comunicadosDto = new ComunicadosDto();
-		 List<Comunicado> comunicados = comunicadoServicio.getComunicados(catTipoComunicado);
-		 
-		 for(Comunicado comunicado2: comunicados) {
-			 
+		catTipoComunicado.setIdTipoComunicado(2);
+		ComunicadosDto comunicadosDto = new ComunicadosDto();
+		List<Comunicado> comunicados = comunicadoServicio.getComunicados(catTipoComunicado);
+
+		for (Comunicado comunicado2 : comunicados) {
+
 			Comunicado2 comunicado22 = new Comunicado2();
-			            comunicado22.setIdComunicado(comunicado2.getIdComunicado());
-			            comunicado22.setTitulo(comunicado2.getTitulo());
-			            comunicado22.setDescripcion(comunicado2.getDescripcion());
-			            comunicado22.setUrl(comunicado2.getUrl());
-			            comunicado22.setImagen(comunicado2.getImagen());
-			            comunicado22.setImagenDetalle(comunicado2.getImagen().toString());
-			            
-			            comunicadosDto.getComunicados().add(comunicado22);
-			}
-				   
-		  //Object mapper instance
-		  ObjectMapper mapper = new ObjectMapper();
-		   
-		  //Convert POJO to JSON
-		  String json = mapper.writeValueAsString(comunicadosDto);
-		  
-		 // model.addObject("comunicadosCarrusel", comunicado.getComunicados());
+			comunicado22.setIdComunicado(comunicado2.getIdComunicado());
+			comunicado22.setTitulo(comunicado2.getTitulo());
+			comunicado22.setDescripcion(comunicado2.getDescripcion());
+			comunicado22.setUrl(comunicado2.getUrl());
+			comunicado22.setImagen(comunicado2.getImagen());
+			comunicado22.setImagenDetalle(comunicado2.getImagen().toString());
+
+			comunicadosDto.getComunicados().add(comunicado22);
+		}
+
+		// Object mapper instance
+		ObjectMapper mapper = new ObjectMapper();
+
+		// Convert POJO to JSON
+		String json = mapper.writeValueAsString(comunicadosDto);
+
+		// model.addObject("comunicadosCarrusel", comunicado.getComunicados());
 		mav.addObject("json", json);
 		mav.addObject("nameUser", getNameUser());
 		mav.addObject("tipo", 4);
-		
+
 		mav.addObject("escolaridad", catEscolaridadServicio.getCatEscolaridad());
 		mav.addObject("tipoIdentificacion", catTipoIdentificacionServicio.getCatTipoIdentificacion());
 		mav.addObject("gradoEstudios", catGradoEstudioServicio.getCatGradoEstudio());
 		mav.addObject("idiomas", catIdiomaServicio.getCatIdiomas());
-		
+
 		return mav;
 
 	}
@@ -466,7 +467,8 @@ public class AtencionCiudadanaControlador {
 			@RequestParam("tipoOjos") String tipoOjos, @RequestParam("ojo") String ojo,
 			@RequestParam("colorCabello") String colorCabello, @RequestParam("longitud") String longitud,
 			@RequestParam("tipoCabello") String tipoCabello, @RequestParam("cabello") String cabello,
-			@RequestParam("frente") String frente, @RequestParam("boca") String boca, @RequestParam("labios") String labios,
+			@RequestParam("frente") String frente, @RequestParam("boca") String boca,
+			@RequestParam("labios") String labios,
 			@RequestParam("dentadura") String dentadura, @RequestParam("detalleDentadura") String detalleDentadura,
 			@RequestParam("baseNariz") String baseNariz, @RequestParam("forma") String forma,
 			@RequestParam("tamanio") String tamanio,
@@ -508,6 +510,7 @@ public class AtencionCiudadanaControlador {
 			@RequestParam("constancia") String constancia) throws IOException, ResourceNotFoundException {
 
 		PersonaDesaparecida personaDesaparece = new PersonaDesaparecida();
+		PersonaDesaparecida personaSaved = new PersonaDesaparecida();
 		String tipoExpediente = "0";
 
 		if (estadoDesaparecido.equals("14")) {
@@ -599,7 +602,7 @@ public class AtencionCiudadanaControlador {
 			}
 
 			personaDesaparece.setDetalleOjo(ojo);
-			
+
 			CatColorCabello catColorCabello = new CatColorCabello();
 			if (!colorCabello.equals("")) {
 				catColorCabello.setIdColorCabello(Integer.parseInt(colorCabello));
@@ -858,14 +861,14 @@ public class AtencionCiudadanaControlador {
 			personaDesaparece.setIdUsuarioAlta(getNameUser());
 			personaDesaparece.setFechaAlta(Date.valueOf(dates));
 
-			personaDesaparecida.savePersonaDesaparecida(personaDesaparece);
-
+			personaSaved = personaDesaparecida.savePersonaDesaparecida(personaDesaparece);
 			tipoExpediente = "1";
+			LOG.info("PERSONA ID:" + personaSaved.getIdPersonaDesaparecida());
 		}
-
+		LOG.info("PERSONA ID:" + personaSaved.getIdPersonaDesaparecida());
 		String expediente = generarExpediente(tipoExpediente, nombreDesaparecido, apellidoPaterno, apellidoMaterno,
 				edadDesaparecido, municipioDesaparecido, sexoDesaparecido, declarante, carpetaInvestigacion,
-				descripcionGeneral);
+				descripcionGeneral, personaSaved.getIdPersonaDesaparecida());
 		List<String> numeroExpediente = new ArrayList<String>();
 		numeroExpediente.add(expediente);
 
@@ -881,7 +884,8 @@ public class AtencionCiudadanaControlador {
 			@RequestParam("municipioDesaparecido") String municipioDesaparecido,
 			@RequestParam("sexoDesaparecido") String sexoDesaparecido, @RequestParam("declarante") String declarante,
 			@RequestParam("carpetaInvestigacion") String carpetaInvestigacion,
-			@RequestParam("descripcionGeneral") String descripcionGeneral) throws ResourceNotFoundException {
+			@RequestParam("descripcionGeneral") String descripcionGeneral, int personaDesaparecidaId)
+			throws ResourceNotFoundException {
 
 		Expediente expedienteCompetente = new Expediente();
 		ExpedienteIncompetencia expedienteIncompetente = new ExpedienteIncompetencia();
@@ -898,7 +902,7 @@ public class AtencionCiudadanaControlador {
 			expedienteCompetente.setFechaAperturaExpediente(Date.valueOf(dates));
 			// expedienteCompetente.setHrAperturaExpediente(hrAperturaExpediente);
 			expedienteCompetente.setIdExpediente(expediente.toString().toUpperCase());
-			expedienteCompetente.setIdPersonaDesaparecida(1);
+			expedienteCompetente.setIdPersonaDesaparecida(personaDesaparecidaId);
 			if (!declarante.equals("")) {
 				expedienteCompetente.setIdPersonaReporta(Integer.parseInt(declarante));
 			}
@@ -942,7 +946,7 @@ public class AtencionCiudadanaControlador {
 				catSexo.setIdSexo(Integer.parseInt(sexoDesaparecido));
 				personaIncompetencia.setCatSexo(catSexo);
 			}
-			
+
 			personaIncompetenciaServicios.savePersonaIncompetencia(personaIncompetencia);
 
 			Usuario usuarioIncompetente = new Usuario();
