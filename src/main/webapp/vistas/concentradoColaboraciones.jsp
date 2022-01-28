@@ -14,7 +14,7 @@
 	%>
 <script type="text/javascript"> initColaboraciones(); </script>
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h4 class="h4 mb-0 text-gray-800">Registro diario de búsqueda</h4>
+    <h4 class="h4 mb-0 text-gray-800">Colaboraciones Consulta</h4>
 </div>
 	<div id="alertaMsj">
 	</div>

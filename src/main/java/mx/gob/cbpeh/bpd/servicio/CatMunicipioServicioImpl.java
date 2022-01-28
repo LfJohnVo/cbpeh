@@ -11,7 +11,7 @@ import mx.gob.cbpeh.bpd.repositorio.CatMunicipioRepositorio;
 
 @Service
 public class CatMunicipioServicioImpl implements CatMunicipioServicio {
-	
+
 	@Autowired
 	private CatMunicipioRepositorio municipioRepositorio;
 
@@ -20,12 +20,18 @@ public class CatMunicipioServicioImpl implements CatMunicipioServicio {
 	public List<CatMunicipio> getCatMunicipios() {
 		return municipioRepositorio.findAll();
 	}
-	
+
 	@Override
 	@Transactional
 	public List<CatMunicipio> getCatMunicipiosPorEstado(String codigoEstado) {
-	
+
 		return municipioRepositorio.findByCodigoEstadoOrderByMunicipioDetalleAsc(codigoEstado);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public CatMunicipio getCatMunicipiosPorEstadoAndPorCodigo(String codigoEstado, String codigoMunicipio) {
+		return municipioRepositorio.findByCodigoEstadoAndCodigoMunicipio(codigoEstado, codigoMunicipio);
 	}
 
 	@Override
@@ -46,5 +52,5 @@ public class CatMunicipioServicioImpl implements CatMunicipioServicio {
 	public void deleteCatMunicipio(int idMunicipio) throws ResourceNotFoundException {
 		municipioRepositorio.deleteById(idMunicipio);
 	}
-	
+
 }

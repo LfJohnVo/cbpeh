@@ -26,6 +26,8 @@
 		session2.setAttribute("estatusColaboracion", request.getAttribute("estatusColaboracion"));
 		session2.setAttribute("lugaresBusqueda", request.getAttribute("lugaresBusqueda"));
 		session2.setAttribute("aniosExpedientes", request.getAttribute("aniosExpedientes"));
+		session2.setAttribute("yearsLargaData", request.getAttribute("yearsLargaData"));
+		session2.setAttribute("yearsBusquedaLargaData", request.getAttribute("yearsBusquedaLargaData"));
 		session2.setAttribute("colaboraciones", request.getAttribute("colaboraciones"));
 		int idAreaUsuario= 0;
 		if(request.getAttribute("usuarioSession") != null)

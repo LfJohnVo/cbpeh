@@ -21,7 +21,9 @@ import mx.gob.cbpeh.bpd.exceptions.ResourceNotFoundException;
 import mx.gob.cbpeh.bpd.modelo.CatMunicipio;
 import mx.gob.cbpeh.bpd.modelo.CatTipoComunicado;
 import mx.gob.cbpeh.bpd.modelo.Comunicado;
+import mx.gob.cbpeh.bpd.servicio.ArchivoLargaDataServicio;
 import mx.gob.cbpeh.bpd.servicio.AtentaNotaServicio;
+import mx.gob.cbpeh.bpd.servicio.BusquedaLargaDataServicio;
 import mx.gob.cbpeh.bpd.servicio.CatAreaServicio;
 import mx.gob.cbpeh.bpd.servicio.CatBaseNarizServicio;
 import mx.gob.cbpeh.bpd.servicio.CatBocaServicio;
@@ -86,6 +88,10 @@ public class GerenciaController {
 
 	@Autowired
 	ColaboracionServicio colaboracionServicio;
+	@Autowired
+	ArchivoLargaDataServicio archivoLargaDataServicio;
+	@Autowired
+	BusquedaLargaDataServicio busquedaLargaDataServicio;
 	@Autowired
 	PersonaReportaServicio personaReportante;
 	@Autowired
@@ -266,6 +272,8 @@ public class GerenciaController {
 		mav.addObject("estatusColaboracion", catEstatusColaboracionServicio.getCatEstatusColaboracions());
 		mav.addObject("lugaresBusqueda", catLugarBusquedaServicio.getCatLugarBusqueda());
 		mav.addObject("aniosExpedientes", expedienteServicios.obtenerAniosExpedientes());
+		mav.addObject("yearsLargaData", archivoLargaDataServicio.getYearsLargaData());
+		mav.addObject("yearsBusquedaLargaData", busquedaLargaDataServicio.getYearsLargaData());
 
 		mav.addObject("asociacionesHidalgo", directorioService.getAsociacionesHidalgo());
 		mav.addObject("busquedaInmediata", directorioService.getBusquedaInmediatas());

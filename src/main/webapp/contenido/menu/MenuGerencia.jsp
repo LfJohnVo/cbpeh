@@ -69,6 +69,8 @@
 		session2.setAttribute("estatusColaboracion", request.getAttribute("estatusColaboracion"));
 		session2.setAttribute("lugaresBusqueda", request.getAttribute("lugaresBusqueda"));
 		session2.setAttribute("aniosExpedientes", request.getAttribute("aniosExpedientes"));
+        session2.setAttribute("yearsLargaData", request.getAttribute("yearsLargaData"));
+        session2.setAttribute("yearsBusquedaLargaData", request.getAttribute("yearsBusquedaLargaData"));
 		session2.setAttribute("colaboraciones", request.getAttribute("colaboraciones"));
 				
 		int idAreaUsuario= 0;
@@ -121,7 +123,20 @@
             </div>
         </div>
     </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Registrar desaparición</span>
+        </a>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a id="personaReportante" class="collapse-item" href="#">Persona declarante</a>   
+                <a id="personaDesaparecida" class="collapse-item" href="#">Persona desaparecida</a>                        
+            </div>
+        </div>
         
+    </li>
     <!-- Nav Item -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAtencion"
@@ -198,8 +213,9 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <!-- <h6 class="collapse-header">Analisis de contexto</h6> -->
                 <a id="mConcentrado" class="collapse-item" href="#">Concentrado</a>
+                <a id="mregistroDiariodeBusqueda" class="collapse-item" href="#">Registro diario<a>                
                 <a id="mConcentradoColaboraciones" class="collapse-item" href="#">Colaboraciones</a>
-                <a id="mregistroDiariodeBusqueda" class="collapse-item" href="#">Registro diario</a>                
+                <a id="mConcentradoLargaData" class="collapse-item" href="#">Larga Data</a>
             </div>
         </div>
     </li>
