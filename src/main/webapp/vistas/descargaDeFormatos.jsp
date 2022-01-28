@@ -66,8 +66,8 @@
           ><i class="fas fa-download mr-2"></i>Descargar</a
         > --%>
         <ul id="listaFormatos">
-          <li data-action="toggle1"><span class="caret">Atención Ciudadana</span>
-            <ul class="nested">
+          <li data-action="toggle1"><span class="caret caret-down">Atención Ciudadana</span>
+            <ul class="nested active">
               <li><a class="text-dark" href="/cbpeh/recursos/formatos/Atencion_Ciudadana/Formato Apertura de Expediente.docx"
           download><i class="fas fa-file-word mr-2 text-primary"></i>Formato de Apertura de Expediente</a></li>
               <li><a class="text-dark" href="/cbpeh/recursos/formatos/Atencion_Ciudadana/Formato Apertura de Expediente.pdf"
@@ -78,8 +78,8 @@
           download><i class="fas fa-file-pdf mr-2 text-danger"></i>Formato Constancia de Atención</a></li>
             </ul>
           </li>
-          <li data-action="toggle2"><span class="caret">Coordinación de Búsqueda</span>
-            <ul class="nested">
+          <li data-action="toggle2"><span class="caret caret-down">Coordinación de Búsqueda</span>
+            <ul class="nested active">
                <li><a class="text-dark" href="/cbpeh/recursos/formatos/Coordinacion_de_ busqueda/ACTA DE ENTREVISTA.pdf"
           download><i class="fas fa-file-pdf mr-2 text-danger"></i>Acta de Entrevista</a></li>
                <li><a class="text-dark" href="/cbpeh/recursos/formatos/Coordinacion_de_ busqueda/FORMATO DE VISITA.pdf"

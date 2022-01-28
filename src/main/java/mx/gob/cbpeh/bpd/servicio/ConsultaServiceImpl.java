@@ -81,36 +81,60 @@ public class ConsultaServiceImpl implements ConsultaService {
 					"13", idMunicipio, idSexo, idEdad, idEstatusLocalizado);
 			if (null != resultado && !resultado.getEstatus().equals("Sin resultados encontrados")) {
 
-				List<CatSexo> sexos = catSexoServicioImpl.getCatSexo();
-				List<CatSexo> sexosFilt = new ArrayList<CatSexo>();
+				// List<CatSexo> sexos = catSexoServicioImpl.getCatSexo();
+				// List<CatSexo> sexosFilt = new ArrayList<CatSexo>();
 
-				List<CatMunicipio> municipiosHidalgo = catMunicipioServicioImpl.getCatMunicipiosPorEstado("13");
-				List<CatMunicipio> municipiosHidalgoFilt = new ArrayList<CatMunicipio>();
+				// List<CatMunicipio> municipiosHidalgo =
+				// catMunicipioServicioImpl.getCatMunicipiosPorEstado("13");
+				// List<CatMunicipio> municipiosHidalgoFilt = new ArrayList<CatMunicipio>();
 
-				List<CatEstatusLocalizado> estatusLoc = catEstatusLocalizadoServicioImpl.getCatEstatusLocalizados();
-				List<CatEstatusLocalizado> estatusLocFilt = new ArrayList<CatEstatusLocalizado>();
+				// List<CatEstatusLocalizado> estatusLoc =
+				// catEstatusLocalizadoServicioImpl.getCatEstatusLocalizados();
+				// List<CatEstatusLocalizado> estatusLocFilt = new
+				// ArrayList<CatEstatusLocalizado>();
 
 				List<ConsultaConcetradoResultados> resultadosConcentrados = resultado.getResultados();
+				log.info("Size resultados concentrado:" + resultadosConcentrados.size());
 				for (int i = 0; i < resultadosConcentrados.size(); i++) {
-					ConsultaConcetradoResultados concentradoResultadosElem = resultadosConcentrados.get(i);
-					sexosFilt = sexos.stream()
-							.filter(elemt -> elemt.getIdSexo() == concentradoResultadosElem.getId_sexo())
-							.collect(Collectors.toList());
-					municipiosHidalgoFilt = municipiosHidalgo.stream().filter(
-							elemt -> elemt.getCodigoMunicipio().equals(concentradoResultadosElem.getCodigo_municipio()))
-							.collect(Collectors.toList());
-					estatusLocFilt = estatusLoc.stream().filter(elemt -> elemt
-							.getIdEstatusLocalizado() == concentradoResultadosElem.getId_estatus_localizado())
-							.collect(Collectors.toList());
+					CatSexo catSexo = catSexoServicioImpl.getCatSexo(resultadosConcentrados.get(i).getId_sexo()).get();
+					CatMunicipio catMunicipio = catMunicipioServicioImpl
+							.getCatMunicipiosPorEstadoAndPorCodigo("13",
+									resultadosConcentrados.get(i).getCodigo_municipio());
+
+					// .getCatMunicipio(Integer.parseInt(resultadosConcentrados.get(i).getCodigo_municipio()))
+					CatEstatusLocalizado catEstatusLocalizado = catEstatusLocalizadoServicioImpl
+							.getCatEstatusLocalizado(resultadosConcentrados.get(i).getId_estatus_localizado());
+					// ConsultaConcetradoResultados concentradoResultadosElem =
+					// resultadosConcentrados.get(i);
+					// sexosFilt = sexos.stream()
+					// .filter(elemt -> elemt.getIdSexo() == concentradoResultadosElem.getId_sexo())
+					// .collect(Collectors.toList());
+					// municipiosHidalgoFilt = municipiosHidalgo.stream().filter(
+					// elemt ->
+					// elemt.getCodigoMunicipio().equals(concentradoResultadosElem.getCodigo_municipio()))
+					// .collect(Collectors.toList());
+					// estatusLocFilt = estatusLoc.stream().filter(elemt -> elemt
+					// .getIdEstatusLocalizado() ==
+					// concentradoResultadosElem.getId_estatus_localizado())
+					// .collect(Collectors.toList());
 					ConcentradoDto dto = new ConcentradoDto(
 							resultadosConcentrados.get(i).getId_expediente(),
 							resultadosConcentrados.get(i).getNombre(),
 							resultadosConcentrados.get(i).getApaterno(),
 							resultadosConcentrados.get(i).getAmaterno(),
 							resultadosConcentrados.get(i).getFecha_apertura_expediente(),
-							sexosFilt.get(0).getSexoDetalle(),
-							municipiosHidalgoFilt.get(0).getMunicipioDetalle(),
-							estatusLocFilt.get(0).getEstatusLocalizadoDetalle());
+							catSexo.getSexoDetalle(),
+							catMunicipio.getMunicipioDetalle(),
+							catEstatusLocalizado.getEstatusLocalizadoDetalle());
+					// ConcentradoDto dto = new ConcentradoDto(
+					// resultadosConcentrados.get(i).getId_expediente(),
+					// resultadosConcentrados.get(i).getNombre(),
+					// resultadosConcentrados.get(i).getApaterno(),
+					// resultadosConcentrados.get(i).getAmaterno(),
+					// resultadosConcentrados.get(i).getFecha_apertura_expediente(),
+					// sexosFilt.get(0).getSexoDetalle(),
+					// municipiosHidalgoFilt.get(0).getMunicipioDetalle(),
+					// estatusLocFilt.get(0).getEstatusLocalizadoDetalle());
 					concentrados.add(dto);
 				}
 			}
