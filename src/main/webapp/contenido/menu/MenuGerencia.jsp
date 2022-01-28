@@ -123,7 +123,20 @@
             </div>
         </div>
     </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Registrar desaparición</span>
+        </a>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a id="personaReportante" class="collapse-item" href="#">Persona declarante</a>   
+                <a id="personaDesaparecida" class="collapse-item" href="#">Persona desaparecida</a>                        
+            </div>
+        </div>
         
+    </li>
     <!-- Nav Item -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAtencion"

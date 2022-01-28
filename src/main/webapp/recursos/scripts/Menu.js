@@ -6,6 +6,9 @@ $(document).ready(function () {
 	$("#mConcentrado").click(function () {
 		$("#container-fluid").load(pathGlobal + "/vistas/concentrado.jsp");
 	});
+	$("#mReportarPersonaDesaparecida").click(function () {
+		$("#container-fluid").load(pathGlobal + "/vistas/personaDesaparecida.jsp");
+	});
 	$("#mEstatusPersonaDesaparecida").click(function () {
 		$("#container-fluid").load(pathGlobal + "/vistas/estatusPersonaDesaparecida.jsp");
 	});
