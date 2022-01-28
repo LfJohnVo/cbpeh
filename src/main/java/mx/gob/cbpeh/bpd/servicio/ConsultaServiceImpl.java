@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import mx.gob.cbpeh.bpd.dto.BusquedaLargaDataConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoDto;
+import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoSelectDto;
 import mx.gob.cbpeh.bpd.dto.ConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ConsultaConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ConsultaConcetradoResultados;
@@ -513,6 +514,48 @@ public class ConsultaServiceImpl implements ConsultaService {
 			path = env.getProperty("ruta.file.excel");
 		}
 		return path;
+	}
+
+	@Override
+	public List<ColaboracionesConcentradoSelectDto> buscarColaboracionSelectDto(String numPeticion,
+			String fechaPeticion, String solColaboracion) {
+		List<Object[]> results = new ArrayList<Object[]>();
+		List<ColaboracionesConcentradoSelectDto> registros = new ArrayList<ColaboracionesConcentradoSelectDto>();
+		StringBuilder queryStr = new StringBuilder(
+				"SELECT id_expediente_colaboracion, numero_officio_peticion, fecha_peticion, colaboracion.id_institucion as instituciondata, firmado_por from colaboracion INNER JOIN cat_institucion on colaboracion.id_institucion = cat_institucion.id_institucion");
+
+		queryStr.append((numPeticion != null && !numPeticion.equals("")) ? " AND numero_officio_peticion = :numPeticion" : "");
+		queryStr.append((fechaPeticion != null && !fechaPeticion.equals("")) ? " AND fecha_peticion = :fechaPeticion" : "");
+		queryStr.append((solColaboracion != null && !solColaboracion.equals("")) ? " AND id_estatus_colaboracion = :solColaboracion" : "");
+
+		//queryStr.append(" GROUP BY ex.id_expediente ORDER BY	ex.id_expediente DESC ");
+
+		Query nativeQueray = em.createNativeQuery(queryStr.toString());
+
+		if (numPeticion != null && !numPeticion.equals("")) {
+			nativeQueray.setParameter("numPeticion", numPeticion);
+		}
+		if (fechaPeticion != null && !fechaPeticion.equals("")) {
+			nativeQueray.setParameter("fechaPeticion", fechaPeticion);
+		}
+		if (solColaboracion != null && !solColaboracion.equals("")) {
+			nativeQueray.setParameter("solColaboracion", solColaboracion);
+		}
+
+		results = nativeQueray.getResultList();
+		log.info("tamanio Reg Diario:" + results.size());
+
+		if (results.size() > 0) {
+			registros = results
+					.stream()
+					.map(result -> new ColaboracionesConcentradoSelectDto(
+							(String) result[0].toString(),
+							(String) result[1].toString(),
+							(String) result[2].toString(),
+							(String) result[4].toString()))
+					.collect(Collectors.toList());
+		}
+		return registros;
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoSelectDto;
 import mx.gob.cbpeh.bpd.dto.Comunicado2;
 import mx.gob.cbpeh.bpd.dto.ComunicadosDto;
 import mx.gob.cbpeh.bpd.exceptions.ResourceNotFoundException;
@@ -86,12 +87,14 @@ import mx.gob.cbpeh.bpd.servicio.CatTipoSangreServicio;
 import mx.gob.cbpeh.bpd.servicio.CatTransporteServicio;
 import mx.gob.cbpeh.bpd.servicio.ColaboracionServicio;
 import mx.gob.cbpeh.bpd.servicio.ComunicadoServicio;
+import mx.gob.cbpeh.bpd.servicio.ConsultaService;
 import mx.gob.cbpeh.bpd.servicio.DirectorioService;
 import mx.gob.cbpeh.bpd.servicio.ExpedienteIncompetenciaServicio;
 import mx.gob.cbpeh.bpd.servicio.ExpedienteServicio;
 import mx.gob.cbpeh.bpd.servicio.PersonaIncompetenciaServicio;
 import mx.gob.cbpeh.bpd.servicio.PersonaReportaServicio;
 import mx.gob.cbpeh.bpd.servicio.UsuarioServicio;
+import mx.gob.cbpeh.bpd.servicio.ConsultaService;
 
 @Controller
 @RequestMapping(value = "/accionesbusqueda")
@@ -219,6 +222,8 @@ public class AccionesBusquedaControlador {
 	CatGradoEstudioServicio catGradoEstudioServicio;
 	@Autowired
 	CatIdiomaServicio catIdiomaServicio;
+	@Autowired 
+	ConsultaService ColaboracionesConcentradoSelectDto;
 
 	@GetMapping
 	private ModelAndView showUserView(@RequestParam Map<String, String> reqParam)
@@ -235,7 +240,7 @@ public class AccionesBusquedaControlador {
 		// mav.addObject("estatus", catEstatusServicio.getCatEstatus());
 		mav.addObject("municipios", catMunicipioServicio.getCatMunicipiosPorEstado("13"));// estado 13 hidalgo
 		mav.addObject("estatusLocalizado", catEstatusLocalizadoServicio.getCatEstatusLocalizados());
-
+		//mav.addObject("numero_officio_peticion", ColaboracionesConcentradoSelectDto.buscarColaboracionSelectDto());
 		mav.addObject("estados", catEstadoServicio.getCatEstados());
 
 		mav.addObject("companiaTel", companiaTelefonoServicio.getCatCompaniaTelefonos());
@@ -281,6 +286,7 @@ public class AccionesBusquedaControlador {
 		mav.addObject("lugaresBusqueda", catLugarBusquedaServicio.getCatLugarBusqueda());
 		mav.addObject("aniosExpedientes", expedienteServicios.obtenerAniosExpedientes());
 		mav.addObject("colaboraciones", colaboracionServicio.getColaboracion());
+		mav.addObject("ColaboracionesConcentradoSelec", colaboracionServicio.getColaboracion());
 		mav.addObject("asociacionesHidalgo", directorioService.getAsociacionesHidalgo());
 		mav.addObject("busquedaInmediata", directorioService.getBusquedaInmediatas());
 		mav.addObject("centroRehabilitacion", directorioService.getCentrosRehabilitacion());

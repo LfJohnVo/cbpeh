@@ -67,6 +67,57 @@ function guardarColaboracion(event) {
 	});            
 }
 
+$(function() {
+	$('#formColaboracionBuscar').on('submit', BuscarColaboracion);
+});
+
+var arrayLugares = [];
+
+function BuscarColaboracion(event) {
+	event.stopPropagation();
+	event.preventDefault();
+	var numeroOfficioPeticion = document.getElementById("numPeticion1").value;
+	console.log(numeroOfficioPeticion);
+	var fechaPeticion = document.getElementById("fechaPeticion1").value;
+	var solColaboracion = document.getElementById("solColaboracion1").value;
+	var data = 'numPeticion=' + 'SEGOB/CEB/5420/2020' + "&fechaPeticion=" + fechaPeticion + "&solColaboracion=" + solColaboracion;
+	var form = document.getElementById('formColaboracionBuscar');
+	var formData = new FormData(form);
+	formData.set("lugaresBusqueda",arrayLugares);
+	
+	$.ajax({
+		url :  'accionesbusqueda/buscar-colaboracion',
+		type : 'GET',
+		data : data,
+		cache : false,
+		dataType : 'json',
+		processData : false,
+		contentType : false,
+		success : function(data, textStatus, jqXHR) {
+			console.log("Si se mando", data);
+			monstrarAlerta({message: data.descripcion, class:"info"});
+				document.getElementById("formColaboracionBuscar").reset();
+				$('.custom-select').val('').trigger('change'); // Reset Select2
+		$("#bodyConcentrados").html("");
+			var bodyConcen = $("#bodyConcentrados");
+
+			if (data.estatus === 1) {
+				$.each(data.elementos, function(index, elemento) {
+					bodyConcen.append(' <tr><td>' + elemento.fechaPeticion + '</td><td>' + elemento.solColaboracion + '</td><td>' + elemento.numPeticion + '</td><td>' + elemento.firmadoPor + '</td></tr>');
+				});
+				$("#btnExportarConcentrado").prop("disabled", false);
+			} else if (data.estatus === 2) {
+				monstrarAlerta({ message: data.descripcion, class: "info" });
+			} else if (data.estatus === -3) {
+				monstrarAlerta({ message: data.descripcion, class: "danger" });
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			monstrarAlerta({message:"Ocurrio un inconveniente al realizar la peticion", class:"danger"});
+		}
+	});            
+}
+
 // Colaboracion
 function exportPdfColaboracion(){
 	let numPeticion = document.getElementById("numPeticion").value;
@@ -98,6 +149,12 @@ function changeInputCol(val) {
 
 function resetColaboracion(){
 	document.getElementById("formColaboracion").reset();
+	$('.custom-select').val('').trigger('change'); // Se resetea también select2
+	$("#btnExportarColaboracion").prop("disabled", true);
+}
+
+function resetColaboracionBuscar(){
+	document.getElementById("formColaboracionBuscar").reset();
 	$('.custom-select').val('').trigger('change'); // Se resetea también select2
 	$("#btnExportarColaboracion").prop("disabled", true);
 }

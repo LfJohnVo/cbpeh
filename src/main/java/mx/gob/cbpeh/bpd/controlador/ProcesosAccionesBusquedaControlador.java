@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import mx.gob.cbpeh.bpd.dto.BusquedaLargaDataConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoDto;
+import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoSelectDto;
 import mx.gob.cbpeh.bpd.dto.CommonRequest;
 import mx.gob.cbpeh.bpd.dto.CommonResponse;
 import mx.gob.cbpeh.bpd.dto.CommonResponseListElement;
@@ -286,6 +287,38 @@ public class ProcesosAccionesBusquedaControlador {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
 		return currentPrincipalName;
+	}
+	
+	@RequestMapping(value = "/buscar-colaboracion", method = RequestMethod.GET, produces = "application/json")//@ResponseBody
+	public ResponseEntity<CommonResponseListElement<ColaboracionesConcentradoSelectDto>> buscarColaboracionSelectDto(
+			@RequestParam("numPeticion") String numPeticion,
+			@RequestParam("fechaPeticion") String fechaPeticion,
+			@RequestParam("solColaboracion") String solColaboracion) {
+		List<ColaboracionesConcentradoSelectDto> colaboraciones = new ArrayList<ColaboracionesConcentradoSelectDto>();
+		CommonResponseListElement<ColaboracionesConcentradoSelectDto> response = new CommonResponseListElement<ColaboracionesConcentradoSelectDto>();
+		try {
+			response.setDescripcion("Se genero un inconveniente al buscar la informacion.");
+			response.setEstatus(-3);
+		} catch (Exception e) {
+			log.error("Inconveniente al consultar registro diario:" + e.getMessage());
+		}
+	
+		try {
+			colaboraciones = consultaService.buscarColaboracionSelectDto(numPeticion, fechaPeticion, solColaboracion);
+			response.setDescripcion(String.valueOf(colaboraciones.size()));
+			if (colaboraciones.size() == 0) {
+				response.setEstatus(2);
+				response.setDescripcion("No se encontraron registros.");
+				response.setElementos(colaboraciones);
+			} else if (colaboraciones.size() > 0) {
+				response.setEstatus(1);
+				response.setDescripcion("OK");
+				response.setElementos(colaboraciones);
+			}
+		} catch (Exception e) {
+			log.error("Inconveniente al consultar registro diario:" + e.getMessage());
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/guardar-colaboracion", method = RequestMethod.POST) // @ResponseBody
