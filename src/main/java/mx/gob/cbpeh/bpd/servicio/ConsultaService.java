@@ -17,6 +17,9 @@ public interface ConsultaService {
 	List<RegistroDiarioDto> buscarRegistroDiario(Integer anio, Integer mes, Integer idEstatus, String idExpediente);
 
 	List<ColaboracionesConcentradoDto> buscarColaboracion(String idExpediententeColaboracion,
+
+            String fechaPeticion, String idInstitucion, String idEstatusColaboracion);
+			
 	List<ColaboracionesConcentradoSelectDto> buscarColaboracionSelectDto(String numPeticion ,
 	String fechaPeticion, String solColaboracion);
 	List<BusquedaLargaDataConcentradoDto> busquedaLargaData(String mesBusquedaLD, String yearBusquedaLD);
