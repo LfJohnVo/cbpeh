@@ -10,15 +10,13 @@ public class ColaboracionesConcentradoDto {
     private String firmadoPor;
     private String personaDesaparecida;
     private String estatusColaboracion;
-    private Object archivo;
-    private String extension;
 
     public ColaboracionesConcentradoDto() {
     }
 
     public ColaboracionesConcentradoDto(String idExpedienteColaboracion, String numeroOfficioPeticion,
-            String institucion, String firmadoPor, String nombre, String aPaterno, String aMaterno,
-            String estatusColaboracion, Object archivo, String extension) {
+                                        String institucion, String firmadoPor, String nombre, String aPaterno, String aMaterno,
+                                        String estatusColaboracion) {
         this.idExpedienteColaboracion = idExpedienteColaboracion;
         this.numeroOfficioPeticion = numeroOfficioPeticion;
         this.institucion = institucion;
@@ -26,8 +24,6 @@ public class ColaboracionesConcentradoDto {
         this.personaDesaparecida = ((nombre != null) ? nombre : "") + " " + ((aPaterno != null) ? aPaterno : "") + " "
                 + ((aMaterno != null) ? aMaterno : "");
         this.estatusColaboracion = estatusColaboracion;
-        this.archivo = archivo;
-        this.extension = extension;
     }
 
     public String getIdExpedienteColaboracion() {
@@ -76,22 +72,6 @@ public class ColaboracionesConcentradoDto {
 
     public void setEstatusColaboracion(String estatusColaboracion) {
         this.estatusColaboracion = estatusColaboracion;
-    }
-
-    public Object getArchivo() {
-        return archivo;
-    }
-
-    public void setArchivo(Object archivo) {
-        this.archivo = archivo;
-    }
-
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
     }
 
 }

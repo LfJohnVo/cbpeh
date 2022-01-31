@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -206,11 +205,10 @@ public class ConsultaServiceImpl implements ConsultaService {
 		List<Object[]> results = new ArrayList<Object[]>();
 		List<ColaboracionesConcentradoDto> registros = new ArrayList<ColaboracionesConcentradoDto>();
 		StringBuilder queryStr = new StringBuilder(
-				"SELECT col.id_expediente_colaboracion,col.numero_officio_peticion,col.fecha_peticion,col.firmado_por,col.nombre,col.apaterno,col.amaterno,col.oficio_colaboracion,ins.institucion_detalle,escol.estatus_colaboracion_detalle,col.archivo,cata.tipo_archivo_detalle "
+				"SELECT col.id_expediente_colaboracion,col.numero_officio_peticion,col.fecha_peticion,col.firmado_por,col.nombre,col.apaterno,col.amaterno,col.oficio_colaboracion,ins.institucion_detalle,escol.estatus_colaboracion_detalle "
 						+ "FROM cbpeh.colaboracion AS col "
 						+ "INNER JOIN cat_institucion AS ins ON col.id_institucion = ins.id_institucion "
-						+ "INNER JOIN cat_estatus_colaboracion escol ON col.id_estatus_colaboracion = escol.id_estatus_colaboracion "
-						+ "LEFT JOIN cat_tipo_archivo cata ON col.id_tipo_archivo = cata.id_tipo_archivo");
+						+ "INNER JOIN cat_estatus_colaboracion escol ON col.id_estatus_colaboracion = escol.id_estatus_colaboracion");
 
 		queryStr.append((idExpediententeColaboracion != null && !idExpediententeColaboracion.equals(""))
 				? " AND col.id_expediente_colaboracion = :idExpediententeColaboracion"
@@ -245,6 +243,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 
 		results = nativeQueray.getResultList();
 		log.info("tamanio Reg Diario:" + results.size());
+
 		if (results.size() > 0) {
 			registros = results
 					.stream()
@@ -256,9 +255,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 							(String) result[4],
 							(String) result[5],
 							(String) result[6],
-							(String) result[9],
-							result[10],
-							(String) (result[11] != null ? result[11] : "")))
+							(String) result[9]))
 					.collect(Collectors.toList());
 		}
 		return registros;

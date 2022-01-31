@@ -323,7 +323,6 @@ public class ProcesosAccionesBusquedaControlador {
 
 	@RequestMapping(value = "/guardar-colaboracion", method = RequestMethod.POST) // @ResponseBody
 	public ResponseEntity<CommonResponse> guardarColaboracion(
-			@RequestParam("cargaEvidencia") MultipartFile file,
 			@RequestParam("numPeticion") String numPeticion,
 			@RequestParam("fechaPeticion") String fechaPeticion,
 			@RequestParam("solColaboracion") Integer solColaboracion,
@@ -342,8 +341,6 @@ public class ProcesosAccionesBusquedaControlador {
 		String folio = "";
 		try {
 			log.info("entro al metodo guardarAccionBusqueda");
-			String nombreArchivo = file.getOriginalFilename();
-			String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf(".") + 1, nombreArchivo.length());
 			Colaboracion colaboracion = new Colaboracion();
 
 			if (null != numPeticion && !numPeticion.equals("")) {
@@ -366,11 +363,7 @@ public class ProcesosAccionesBusquedaControlador {
 			if (null != aMaterno && !aMaterno.equals("")) {
 				colaboracion.setAmaterno(aMaterno.toUpperCase());
 			}
-			// Guardar Archivo
-			CatTipoArchivo catTipoArchivo = tipoArchivoServicio.getCatTipoArchivo(extension.toUpperCase());
-			colaboracion.setArchivo(file.getBytes());
-			colaboracion.setCatTipoArchivo(catTipoArchivo);
-			colaboracion.setNombreArchivo(nombreArchivo);
+
 			CatEstatusColaboracion estatus = new CatEstatusColaboracion();
 			estatus.setIdEstatusColaboracion(estatusColaboracion);
 			colaboracion.setCatEstatusColaboracion(estatus);
