@@ -81,6 +81,7 @@
             <th scope="col">Firmado Por</th>
             <th scope="col">Persona Desaparecida</th>
             <th scope="col">Estatus</th>
+            <th scope="col">Archivo</th>
           </tr>
         </thead>
         <tbody id="bodyColaboraciones">

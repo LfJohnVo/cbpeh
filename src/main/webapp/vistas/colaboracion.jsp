@@ -4,6 +4,8 @@
 <%@page import="mx.gob.cbpeh.bpd.modelo.CatInstitucion"%>
 <%@page import="mx.gob.cbpeh.bpd.modelo.CatEstatusColaboracion"%>
 <%@page import="mx.gob.cbpeh.bpd.modelo.CatLugarBusqueda"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" isELIgnored="false" %>
 <%
 HttpSession session2 = request.getSession();
 
@@ -21,10 +23,10 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 			class="nav-link active" data-toggle="tab" role="tab"
 			aria-controls="nav-nuevo" aria-selected="true" data-toggle="tab"
 			href="#nav-nuevo">
-				<h5 class="h5 mb-0">Registrar nueva colaboraci髇</h5>
+				<h5 class="h5 mb-0">Registrar nueva colaboraci贸n</h5>
 		</a></li>
 		<li class="nav-item"><a class="nav-link" data-toggle="tab"
-			href="#tabs-2" role="tab">Consulta colaboraci髇</a></li>
+			href="#tabs-2" role="tab">Consulta colaboraci贸n</a></li>
 	</ul>
 </nav>
 <hr style="height: 2px" color="#EF4B55">
@@ -35,17 +37,17 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 			method="post">
 			<div class="form-group row">
 				<div class="col-lg-4 col-md-12">
-					<label for="numColaboracion">N鷐ero de oficio de petici髇</label> <input
+					<label for="numColaboracion">N煤mero de oficio de petici贸n</label> <input
 						type="text" class="form-control text-uppercase" id="numPeticion"
 						name="numPeticion" onchange="changeInputCol(this.value)">
 				</div>
 				<div class="col-lg-4 col-md-12">
-					<label for="fechaApertura">Fecha de petici髇</label> <input
+					<label for="fechaApertura">Fecha de petici贸n</label> <input
 						type="date" class="form-control text-uppercase" id="fechaPeticion"
 						name="fechaPeticion">
 				</div>
 				<div class="col-lg-4 col-md-12">
-					<label for="solColaboracion">Solicitud de colaboraci髇 de</label> <select
+					<label for="solColaboracion">Solicitud de colaboraci贸n de</label> <select
 						class="custom-select d-block w-100" id="solColaboracion"
 						name="solColaboracion" required>
 						<option value="">Selecciona...</option>
@@ -89,7 +91,7 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 					<a class="nav-item nav-link active" id="nav-detalle-tab"
 						data-toggle="tab" role="tab" aria-controls="nav-detalle"
 						aria-selected="true">
-						<h5 class="h5 mb-0">Detalle de colaboraci髇</h5>
+						<h5 class="h5 mb-0">Detalle de colaboraci贸n</h5>
 					</a>
 				</div>
 			</nav>
@@ -99,7 +101,7 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 					role="tabpanel" aria-labelledby="nav-detalle-tab">
 					<div class="form-group row">
 						<div class="col-lg-4 col-md-12">
-							<label for="estatusColaboracion">Estatus de colaboraci髇</label>
+							<label for="estatusColaboracion">Estatus de colaboraci贸n</label>
 							<select class="custom-select d-block w-100"
 								id="estatusColaboracion" name="estatusColaboracion" required>
 								<option value="">Selecciona...</option>
@@ -115,7 +117,7 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 							</select>
 						</div>
 						<div class="col-4">
-							<label class="">Acciones de b鷖queda</label> <select
+							<label class="">Acciones de b煤squeda</label> <select
 								class="custom-select d-block w-100" id="accionesBusqueda">
 								<option value="">Selecciona...</option>
 								<%
@@ -144,7 +146,7 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 									<!-- table-striped-->
 									<thead class="thead-light">
 										<tr>
-											<th scope="col">Accion de b鷖queda</th>
+											<th scope="col">Accion de b煤squeda</th>
 											<th scope="col">Eliminar</th>
 										</tr>
 									</thead>
@@ -153,6 +155,19 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 								</table>
 							</div>
 						</div>
+					</div>
+					<nav>
+						<div class="nav nav-tabs" id="nav-tab" role="tablist">
+								<a class="nav-item nav-link active" id="nav-detalle-tab"
+									data-toggle="tab" role="tab"
+									aria-controls="nav-detalle" aria-selected="true">
+									<h5 class="h5 mb-0">Adjuntar Evidencia</h5>
+								</a>
+						</div>
+					</nav>
+					<div class="form-group mt-4">
+						<label for="evidenciaEviAt">Evidencia</label>
+						<input type="file" class="form-control-file" id="cargaEvidencia" name="cargaEvidencia" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.jfif,.mp3,.mp4,.mpeg,.opus,.wav,.pptx" data-browse="adjuntar" required>
 					</div>
 					<div class="form-group row">
 						<div class="col-12">
@@ -183,17 +198,17 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 			method="post">
 			<div class="form-group row">
 				<div class="col-lg-4 col-md-12">
-					<label for="numColaboracion">N鷐ero de oficio de petici髇</label> <input
+					<label for="numColaboracion">N煤mero de oficio de petici贸n</label> <input
 						type="text" class="form-control text-uppercase" id="numPeticion1"
 						name="numPeticion" onchange="changeInputCol(this.value)">
 				</div>
 				<div class="col-lg-4 col-md-12">
-					<label for="fechaApertura">Fecha de petici髇</label> <input
+					<label for="fechaApertura">Fecha de petici贸n</label> <input
 						type="date" class="form-control text-uppercase" id="fechaPeticion1"
 						name="fechaPeticion">
 				</div>
 				<div class="col-lg-4 col-md-12">
-					<label for="solColaboracion">Solicitud de colaboraci髇 de</label> <select
+					<label for="solColaboracion">Solicitud de colaboraci贸n de</label> <select
 						class="custom-select d-block w-100" id="solColaboracion1"
 						name="solColaboracion">
 						<option value="">Selecciona...</option>
@@ -228,9 +243,9 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
     <table class="table">
         <thead class="thead-light">
           <tr>
-            <th scope="col">N鷐ero petici髇</th>
-            <th scope="col">Fecha petici髇</th>
-            <th scope="col">Expediente colaboraci髇</th>
+            <th scope="col">N煤mero petici贸n</th>
+            <th scope="col">Fecha petici贸n</th>
+            <th scope="col">Expediente colaboraci贸n</th>
             <th scope="col">Firmado Por</th>
           </tr>
         </thead>
@@ -243,9 +258,9 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 </div>
 
 <script>
-	$('.custom-select').select2({
-		theme : 'bootstrap4',
-		placeholder : 'Selecciona un opci髇',
-		allowClear : true
+$('.custom-select').select2({
+	 theme:'bootstrap4',
+	 placeholder: 'Selecciona un opci贸n',
+	 allowClear: true
 	})
 </script>
