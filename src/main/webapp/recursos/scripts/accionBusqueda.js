@@ -263,8 +263,18 @@ function buscarColaboraciones() {
 							<td>${elemento.firmadoPor}</td>
 							<td>${elemento.personaDesaparecida}</td>
 							<td>${elemento.estatusColaboracion}</td>
+							<td>`
+					if (elemento.archivo != null) {
+						html += `
+								<a class="btn btn-info btn-circle" download="${elemento.idExpedienteColaboracion}.${elemento.extension.toLowerCase()}" href="data:;base64,${elemento.archivo}"><span class="fa fa-eye"></span></button>
+								`;
+					} else {
+						html += "No se encontró un archivo";
+					}
+					`</td>
 						</tr>
 					`;
+					console.log(elemento.archivo);
 					bodyTabla.append(html);
 				});
 				$("#btnExportarColaboraciones").prop("disabled", false);
