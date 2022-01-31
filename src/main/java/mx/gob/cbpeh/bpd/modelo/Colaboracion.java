@@ -1,62 +1,71 @@
 package mx.gob.cbpeh.bpd.modelo;
 
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="colaboracion")
-public class Colaboracion  {	
+@Table(name = "colaboracion")
+public class Colaboracion {
 
 	@Id
-	//@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_expediente_colaboracion")
+	// @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id_expediente_colaboracion")
 	private String idExpedienteColaboracion;
+
+	@Lob
+	private byte[] archivo;
+
+	@Column(name = "nombre_archivo")
+	private String nombreArchivo;
+
+	@ManyToOne
+	@JoinColumn(name = "id_tipo_archivo")
+	private CatTipoArchivo catTipoArchivo;
 
 	private String amaterno;
 
 	private String apaterno;
 
-	@Column(name="estatus_expediente_colaboracion")
+	@Column(name = "estatus_expediente_colaboracion")
 	private int estatusExpedienteColaboracion;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_actualiza")
+	@Column(name = "fecha_actualiza")
 	private Date fechaActualiza;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_alta")
+	@Column(name = "fecha_alta")
 	private Date fechaAlta;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_peticion")
+	@Column(name = "fecha_peticion")
 	private Date fechaPeticion;
 
-	@Column(name="firmado_por")
+	@Column(name = "firmado_por")
 	private String firmadoPor;
 
 	private String nombre;
 
-	@Column(name="numero_officio_peticion")
+	@Column(name = "numero_officio_peticion")
 	private String numeroOfficioPeticion;
 
-	@Column(name="oficio_colaboracion")
+	@Column(name = "oficio_colaboracion")
 	private String oficioColaboracion;
 
-	@Column(name="usuario_actualiza")
+	@Column(name = "usuario_actualiza")
 	private String usuarioActualiza;
 
-	@Column(name="usuario_alta")
+	@Column(name = "usuario_alta")
 	private String usuarioAlta;
 
-	//bi-directional many-to-one association to CatEstatusColaboracion
+	// bi-directional many-to-one association to CatEstatusColaboracion
 	@ManyToOne
-	@JoinColumn(name="id_estatus_colaboracion")
+	@JoinColumn(name = "id_estatus_colaboracion")
 	private CatEstatusColaboracion catEstatusColaboracion;
 
-	//bi-directional many-to-one association to CatInstitucion
+	// bi-directional many-to-one association to CatInstitucion
 	@ManyToOne
-	@JoinColumn(name="id_institucion")
+	@JoinColumn(name = "id_institucion")
 	private CatInstitucion catInstitucion;
 
 	public Colaboracion() {
@@ -182,5 +191,28 @@ public class Colaboracion  {
 		this.catInstitucion = catInstitucion;
 	}
 
+	public byte[] getArchivo() {
+		return archivo;
+	}
+
+	public void setArchivo(byte[] archivo) {
+		this.archivo = archivo;
+	}
+
+	public String getNombreArchivo() {
+		return nombreArchivo;
+	}
+
+	public void setNombreArchivo(String nombreArchivo) {
+		this.nombreArchivo = nombreArchivo;
+	}
+
+	public CatTipoArchivo getCatTipoArchivo() {
+		return catTipoArchivo;
+	}
+
+	public void setCatTipoArchivo(CatTipoArchivo catTipoArchivo) {
+		this.catTipoArchivo = catTipoArchivo;
+	}
 
 }

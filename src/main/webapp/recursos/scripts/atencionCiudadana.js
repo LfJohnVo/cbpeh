@@ -907,7 +907,7 @@ function leerDesaparecido(elemento) {
 		let htmlFotografia = 'Sin fotografia';
 		$('#divFotografiaDesa').html(htmlFotografia);
 	} else {
-
+		console.log(elemento.archivoFotoPersona.mime);
 		let htmlFotografia = '	<a href="data:' + elemento.archivoFotoPersona.mime + ';base64,' + elemento.archivoFotoPersona.archivo + '" download="' + elemento.archivoFotoPersona.nombre + elemento.archivoFotoPersona.extencion + '" id="fotoPersona' + '">Ver Fotografia <button type="button" class="btn btn-info btn-circle"><span class="fa fa-eye"></span></button> </a>';
 		$('#divFotografiaDesa').html(htmlFotografia);
 	}
