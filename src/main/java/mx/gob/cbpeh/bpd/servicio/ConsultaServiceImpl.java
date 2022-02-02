@@ -527,11 +527,16 @@ public class ConsultaServiceImpl implements ConsultaService {
 		StringBuilder queryStr = new StringBuilder(
 				"SELECT id_expediente_colaboracion, numero_officio_peticion, fecha_peticion, colaboracion.id_institucion as instituciondata, firmado_por from colaboracion INNER JOIN cat_institucion on colaboracion.id_institucion = cat_institucion.id_institucion");
 
-		queryStr.append((numPeticion != null && !numPeticion.equals("")) ? " AND numero_officio_peticion = :numPeticion" : "");
-		queryStr.append((fechaPeticion != null && !fechaPeticion.equals("")) ? " AND fecha_peticion = :fechaPeticion" : "");
-		queryStr.append((solColaboracion != null && !solColaboracion.equals("")) ? " AND id_estatus_colaboracion = :solColaboracion" : "");
+		queryStr.append(
+				(numPeticion != null && !numPeticion.equals("")) ? " AND numero_officio_peticion = :numPeticion" : "");
+		queryStr.append(
+				(fechaPeticion != null && !fechaPeticion.equals("")) ? " AND fecha_peticion = :fechaPeticion" : "");
+		queryStr.append((solColaboracion != null && !solColaboracion.equals(""))
+				? " AND id_estatus_colaboracion = :solColaboracion"
+				: "");
 
-		//queryStr.append(" GROUP BY ex.id_expediente ORDER BY	ex.id_expediente DESC ");
+		// queryStr.append(" GROUP BY ex.id_expediente ORDER BY ex.id_expediente DESC
+		// ");
 
 		Query nativeQueray = em.createNativeQuery(queryStr.toString());
 

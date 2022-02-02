@@ -6,11 +6,16 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +49,8 @@ import mx.gob.cbpeh.bpd.modelo.CatLugarBusqueda;
 import mx.gob.cbpeh.bpd.modelo.CatMunicipio;
 import mx.gob.cbpeh.bpd.modelo.CatTipoArchivo;
 import mx.gob.cbpeh.bpd.modelo.Colaboracion;
+import mx.gob.cbpeh.bpd.modelo.ColaboracionDesaparecidos;
+import mx.gob.cbpeh.bpd.modelo.ColaboracionDesaparecidosPK;
 import mx.gob.cbpeh.bpd.modelo.ColaboracionLugarBusqueda;
 import mx.gob.cbpeh.bpd.modelo.ColaboracionLugarBusquedaPK;
 import mx.gob.cbpeh.bpd.modelo.PersonaReporta;
@@ -57,6 +64,7 @@ import mx.gob.cbpeh.bpd.servicio.CatEstatusServicio;
 import mx.gob.cbpeh.bpd.servicio.CatInstitucionServicio;
 import mx.gob.cbpeh.bpd.servicio.CatMunicipioServicio;
 import mx.gob.cbpeh.bpd.servicio.CatTipoArchivoServicio;
+import mx.gob.cbpeh.bpd.servicio.ColaboracionDesaparecidosServicio;
 import mx.gob.cbpeh.bpd.servicio.ColaboracionLugarBusquedaServicio;
 import mx.gob.cbpeh.bpd.servicio.ColaboracionServicio;
 import mx.gob.cbpeh.bpd.servicio.ConsultaService;
@@ -98,6 +106,8 @@ public class ProcesosAccionesBusquedaControlador {
 	ColaboracionServicio colaboracionServicio;
 	@Autowired
 	ColaboracionLugarBusquedaServicio colaboracionLugarBusquedaServicio;
+	@Autowired
+	ColaboracionDesaparecidosServicio colaboracionDesaparecidosServicio;
 	@Autowired
 	CatInstitucionServicio catInstitucionServicio;
 	@Autowired
@@ -288,8 +298,8 @@ public class ProcesosAccionesBusquedaControlador {
 		String currentPrincipalName = authentication.getName();
 		return currentPrincipalName;
 	}
-	
-	@RequestMapping(value = "/buscar-colaboracion", method = RequestMethod.GET, produces = "application/json")//@ResponseBody
+
+	@RequestMapping(value = "/buscar-colaboracion", method = RequestMethod.GET, produces = "application/json") // @ResponseBody
 	public ResponseEntity<CommonResponseListElement<ColaboracionesConcentradoSelectDto>> buscarColaboracionSelectDto(
 			@RequestParam("numPeticion") String numPeticion,
 			@RequestParam("fechaPeticion") String fechaPeticion,
@@ -302,7 +312,7 @@ public class ProcesosAccionesBusquedaControlador {
 		} catch (Exception e) {
 			log.error("Inconveniente al consultar registro diario:" + e.getMessage());
 		}
-	
+
 		try {
 			colaboraciones = consultaService.buscarColaboracionSelectDto(numPeticion, fechaPeticion, solColaboracion);
 			response.setDescripcion(String.valueOf(colaboraciones.size()));
@@ -331,8 +341,9 @@ public class ProcesosAccionesBusquedaControlador {
 			@RequestParam("nombres") String nombres,
 			@RequestParam("aPaterno") String aPaterno,
 			@RequestParam("aMaterno") String aMaterno,
-			@RequestParam("estatusColaboracion") Integer estatusColaboracion,
-			@RequestParam("lugaresBusqueda") List<Integer> lugaresBusqueda) {
+			@RequestParam("lugaresBusqueda") List<Integer> lugaresBusqueda,
+			@RequestParam("desaparecidos") String desaparecidos) {
+		// convert JSON array to List
 
 		CommonResponse commonResponse = new CommonResponse();
 		commonResponse.setEstatus(-3);
@@ -372,7 +383,7 @@ public class ProcesosAccionesBusquedaControlador {
 			colaboracion.setCatTipoArchivo(catTipoArchivo);
 			colaboracion.setNombreArchivo(nombreArchivo);
 			CatEstatusColaboracion estatus = new CatEstatusColaboracion();
-			estatus.setIdEstatusColaboracion(estatusColaboracion);
+			estatus.setIdEstatusColaboracion(1);
 			colaboracion.setCatEstatusColaboracion(estatus);
 
 			colaboracion.setFechaAlta(new Date());
@@ -403,6 +414,24 @@ public class ProcesosAccionesBusquedaControlador {
 				}
 				commonResponse.setEstatus(1);
 				commonResponse.setDescripcion("Se registro la colaboracion con folio:" + folio);
+				ObjectMapper mapper = new ObjectMapper();
+
+				List<ColaboracionDesaparecidos> arrayDesaparecidos = Arrays
+						.asList(mapper.readValue(desaparecidos, ColaboracionDesaparecidos[].class));
+				// arrayDesaparecidos.stream().forEach(x -> log.info(x.getNombre()));
+				if (arrayDesaparecidos.size() > 0) {
+					for (ColaboracionDesaparecidos desaparecido : arrayDesaparecidos) {
+
+						ColaboracionDesaparecidos colaboracionDesaparecido = new ColaboracionDesaparecidos();
+
+						colaboracionDesaparecido.setNombre(desaparecido.getNombre());
+						colaboracionDesaparecido.setaPaterno(desaparecido.getaPaterno());
+						colaboracionDesaparecido.setaMaterno(desaparecido.getaMaterno());
+						colaboracionDesaparecido.setColaboracion(colaboracion);
+						//
+						colaboracionDesaparecidosServicio.save(colaboracionDesaparecido);
+					}
+				}
 			}
 		} catch (Exception e) {
 			log.error("Ocurrio un inconveniente al guardar accionBusqueda:" + e.getMessage());

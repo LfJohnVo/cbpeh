@@ -70,22 +70,55 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 						name="nombreFirma">
 				</div>
 			</div>
+			<nav>
+				<div class="nav nav-tabs" id="nav-tab" role="tablist">
+					<a class="nav-item nav-link active" id="nav-detalle-tab"
+						data-toggle="tab" role="tab" aria-controls="nav-detalle"
+						aria-selected="true">
+						<h5 class="h5 mb-0">Desaparecidos</h5>
+					</a>
+				</div>
+			</nav>
 			<div class="form-group row">
-				<div class="col-lg-4 col-md-12">
+				<div class="col-lg-3 col-md-12">
 					<label for="nombres">Nombres del desaparecido</label> <input
 						type="text" class="form-control text-uppercase" id="nombres"
-						name="nombres" required>
+						name="nombres">
 				</div>
-				<div class="col-lg-4 col-md-12">
+				<div class="col-lg-3 col-md-12">
 					<label for="aPaterno">Apellido paterno</label> <input type="text"
 						class="form-control text-uppercase" id="aPaterno" name="aPaterno">
 				</div>
-				<div class="col-lg-4 col-md-12">
+				<div class="col-lg-3 col-md-12">
 					<label for="aMaterno">Apellido materno</label> <input type="text"
 						class="form-control text-uppercase" id="aMaterno" name="aMaterno">
 				</div>
+				<div class="col-3">
+					<label class=""></label>
+					<div class="p-1">
+						<button id="adicionarDesaparecido" type="button" class="btn btn-primary">Agregar</button>
+					</div>
+				</div>
 			</div>
-
+			<div class="form-group row">
+				<div class="col-12">
+					<div class="table-responsive">
+						<table id="tblDesaparecidos" class="table">
+							<!-- table-striped-->
+							<thead class="thead-light">
+								<tr>
+									<th scope="col">Nombre(s) del Desaparecido</th>
+									<th scope="col">Apellido Paterno</th>
+									<th scope="col">Apellido Materno</th>
+									<th scope="col">Eliminar</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 			<nav>
 				<div class="nav nav-tabs" id="nav-tab" role="tablist">
 					<a class="nav-item nav-link active" id="nav-detalle-tab"
@@ -103,7 +136,7 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 						<div class="col-lg-4 col-md-12">
 							<label for="estatusColaboracion">Estatus de colaboración</label>
 							<select class="custom-select d-block w-100"
-								id="estatusColaboracion" name="estatusColaboracion" required>
+								id="estatusColaboracion" name="estatusColaboracion">
 								<option value="">Selecciona...</option>
 								<%
 								for (CatEstatusColaboracion estatus : estatusColaboracion) {
@@ -167,7 +200,7 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 					</nav>
 					<div class="form-group mt-4">
 						<label for="evidenciaEviAt">Evidencia</label>
-						<input type="file" class="form-control-file" id="cargaEvidencia" name="cargaEvidencia" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.jfif,.mp3,.mp4,.mpeg,.opus,.wav,.pptx" data-browse="adjuntar" required>
+						<input type="file" class="form-control-file" id="cargaEvidencia" name="cargaEvidencia" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.jfif,.mp3,.mp4,.mpeg,.opus,.wav,.pptx" data-browse="adjuntar">
 					</div>
 					<div class="form-group row">
 						<div class="col-12">
