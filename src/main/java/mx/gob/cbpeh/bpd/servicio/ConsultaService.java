@@ -3,6 +3,7 @@ package mx.gob.cbpeh.bpd.servicio;
 import java.io.File;
 import java.util.List;
 
+import mx.gob.cbpeh.bpd.dto.AtencionesPsicologicasConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.BusquedaLargaDataConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ConcentradoDto;
@@ -16,17 +17,25 @@ public interface ConsultaService {
 
 	List<RegistroDiarioDto> buscarRegistroDiario(Integer anio, Integer mes, Integer idEstatus, String idExpediente);
 
-	List<ColaboracionesConcentradoDto> buscarColaboracion(String idExpediententeColaboracion,
+	List<ColaboracionesConcentradoDto> buscarColaboracion(String idExpediententeColaboracion, String fechaPeticion,
+			String idInstitucion, String idEstatusColaboracion);
 
-            String fechaPeticion, String idInstitucion, String idEstatusColaboracion);
-			
-	List<ColaboracionesConcentradoSelectDto> buscarColaboracionSelectDto(String numPeticion ,
-	String fechaPeticion, String solColaboracion);
+	List<ColaboracionesConcentradoSelectDto> buscarColaboracionSelectDto(String numPeticion, String fechaPeticion,
+			String solColaboracion);
+
 	List<BusquedaLargaDataConcentradoDto> busquedaLargaData(String mesBusquedaLD, String yearBusquedaLD);
+
+	List<AtencionesPsicologicasConcentradoDto> buscarAtencionPsicologica(String expediente, String fecha);
+
 	File generarRegistrodiario(Integer anio, Integer mes, Integer idEstatus, String idExpedienten);
+
 	File generarConcentrado(String idExpediente, String idsexo, String idEdad, String idMunicipio,
 			String idEstatusLocalizado);
+
 	File generarColaboraciones(String idExpediententeColaboracion, String fechaPeticion, String idInstitucion,
 			String idEstatusColaboracion);
+
 	File generarBusquedaLargaData(String mesBusquedaLD, String yearBusquedaLD);
+
+	File generarAtencionPsicologicaReporte(String expediente, String fecha);
 }

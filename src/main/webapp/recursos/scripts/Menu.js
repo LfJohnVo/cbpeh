@@ -6,11 +6,17 @@ $(document).ready(function () {
 	$("#mConcentrado").click(function () {
 		$("#container-fluid").load(pathGlobal + "/vistas/concentrado.jsp");
 	});
+	$("#mConcentradoAtencionesPsicologicas").click(function () {
+		$("#container-fluid").load(pathGlobal + "/vistas/concentradoAtencionesPsicologicas.jsp");
+	});
 	$("#mReportarPersonaDesaparecida").click(function () {
 		$("#container-fluid").load(pathGlobal + "/vistas/personaDesaparecida.jsp");
 	});
 	$("#mEstatusPersonaDesaparecida").click(function () {
 		$("#container-fluid").load(pathGlobal + "/vistas/estatusPersonaDesaparecida.jsp");
+	});
+	$("#mAtencionesPsicologicas").click(function () {
+		$("#container-fluid").load(pathGlobal + "/vistas/atencionesPsicologicas.jsp");
 	});
 	$("#mCargaEvidenciasAT").click(function () {
 		$("#container-fluid").load(pathGlobal + "/vistas/cargaEvidenciasAT.jsp");

@@ -246,10 +246,70 @@ function buscarConcentrado() {
 		}
 	});
 }
+
+function busquedaAtencionesPsicologicas() {
+	var expediente = document.getElementById("expediente").value;
+	var fecha = document.getElementById("fecha").value;
+	var data = 'expediente=' + expediente + '&fecha=' + fecha;
+	$.ajax({
+		url: "atencionciudadana/buscar-atencion-psicologica",
+		type: 'GET',
+		data: data,
+		success: function (data) {
+			$("#bodyBusquedaAtencionesPsicologicas").html("");
+			var bodyConcen = $("#bodyBusquedaAtencionesPsicologicas");
+
+			if (data.estatus === 1) {
+				$.each(data.elementos, function (index, elemento) {
+					let html = `
+						<tr>
+							<td>${elemento.expediente}</td>
+							<td>${elemento.nombre}</td>
+							<td>${elemento.parentesco}</td>
+							<td>${elemento.fecha}</td>
+							<td>${elemento.observaciones}</td>
+						</tr>
+					`;
+					bodyConcen.append(html);
+				});
+				$("#btnExportarBusquedaAtencionesPsicologicas").prop("disabled", false);
+			} else if (data.estatus === 2) {
+				monstrarAlerta({ message: data.descripcion, class: "info" });
+			} else if (data.estatus === -3) {
+				monstrarAlerta({ message: data.descripcion, class: "danger" });
+			}
+		},
+		error: function () {
+			monstrarAlerta({ message: "No se ha podido obtener la informacion", class: "danger" });
+		}
+	});
+}
+
 function limpiarTabla() {
 	document.getElementById("formConcentradoAt").reset();
 	$('.custom-select').val('').trigger('change'); // Reset select2
 	$('#bodyConcentrados').html("");
+}
+
+function initBusquedaAtencionesPsicologicas() {
+	$("#btnExportarBusquedaAtencionesPsicologicas").prop("disabled", true);
+}
+function limpiarTablaBusquedaAtencionesPsicologicas() {
+	document.getElementById("formConcentradoAtencionesPsicologicas").reset();
+	$('.custom-select').val('').trigger('change'); // Reset select2
+	$('#bodyBusquedaAtencionesPsicologicas').html("");
+}
+
+function exportarBusquedaAtencionesPsicologicas() {
+	var expediente = document.getElementById("expediente").value;
+	var fecha = document.getElementById("fecha").value;
+	var data = 'expediente=' + expediente + '&fechaAtencion=' + fecha;
+
+	let uriExport = "atencionciudadana/exportar-concentrado-atenciones-psicologicas?" + data;
+	//const url = URL.createObjectURL();
+	const a = document.createElement('a');
+	a.href = uriExport;
+	a.click();
 }
 
 function cargaMunicipio() {
@@ -440,8 +500,6 @@ function cargaDeclarante() {
 		}
 	});
 }
-
-
 
 function consultarEstatusPersona() {
 
