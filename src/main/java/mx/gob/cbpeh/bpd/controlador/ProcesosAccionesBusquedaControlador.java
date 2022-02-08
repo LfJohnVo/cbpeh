@@ -332,6 +332,7 @@ public class ProcesosAccionesBusquedaControlador {
 			@RequestParam("aPaterno") String aPaterno,
 			@RequestParam("aMaterno") String aMaterno,
 			@RequestParam("estatusColaboracion") Integer estatusColaboracion,
+			@RequestParam("colaboracion") Integer colaboracion,
 			@RequestParam("lugaresBusqueda") List<Integer> lugaresBusqueda) {
 
 		CommonResponse commonResponse = new CommonResponse();

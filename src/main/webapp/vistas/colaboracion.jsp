@@ -133,6 +133,14 @@ List<CatLugarBusqueda> lugaresBusqueda = (List<CatLugarBusqueda>) session2.getAt
 							</select>
 						</div>
 						<div class="col-4">
+							<label class="">Clasificación</label> <select
+								class="custom-select d-block w-100" id="clasificacion">
+								<option value="">Selecciona...</option>
+								<option value="1">Entrante</option>
+								<option value="2">Saliente</option>
+							</select>
+						</div>
+						<div class="col-4">
 							<label class=""></label>
 							<div class="p-1">
 								<button id="adicionar" type="button" class="btn btn-primary">Agregar</button>
