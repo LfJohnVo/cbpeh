@@ -9,26 +9,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="asociaciones_hidalgo")
+@Table(name = "asociaciones_hidalgo")
 public class AsociacionesHidalgo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_asociaciones")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_asociaciones")
 	private int idAsociaciones;
 
 	private String asociacion;
 
-	@Column(name="correo_electronico")
+	@Column(name = "correo_electronico")
 	private String correoElectronico;
 
 	private String presidente_representanteLegal;
 
-	@Column(name="telefono_fijo")
+	@Column(name = "telefono_fijo")
 	private String telefonoFijo;
 
-	@Column(name="telefono_movil")
+	@Column(name = "telefono_movil")
 	private String telefonoMovil;
 
 	public AsociacionesHidalgo() {

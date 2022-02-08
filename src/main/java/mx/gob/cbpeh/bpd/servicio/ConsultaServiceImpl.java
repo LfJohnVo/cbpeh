@@ -29,6 +29,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import mx.gob.cbpeh.bpd.dto.AtencionesPsicologicasConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.BusquedaLargaDataConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoDto;
 import mx.gob.cbpeh.bpd.dto.ColaboracionesConcentradoSelectDto;
@@ -310,6 +311,51 @@ public class ConsultaServiceImpl implements ConsultaService {
 							(String) result[6],
 							(String) String.valueOf(result[7]),
 							(String) String.valueOf(result[8])))
+					.collect(Collectors.toList());
+		}
+		return registros;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AtencionesPsicologicasConcentradoDto> buscarAtencionPsicologica(String expediente, String fecha) {
+		List<Object[]> results = new ArrayList<Object[]>();
+		List<AtencionesPsicologicasConcentradoDto> registros = new ArrayList<AtencionesPsicologicasConcentradoDto>();
+		StringBuilder queryStr = new StringBuilder(
+				"SELECT ap.id,ap.nombre,ap.parentesco,ap.fecha, ap.observaciones, ap.id_expediente "
+						+ "FROM cbpeh.atenciones_psicologicas AS ap "
+						+ "INNER JOIN expediente AS exp ON ap.id_expediente = exp.id_expediente ");
+
+		queryStr.append((expediente != null && !expediente.equals(""))
+				? " AND exp.id_expediente = :expediente"
+				: "");
+		queryStr.append((fecha != null && !fecha.equals(""))
+				? " AND ap.fecha = :fecha"
+				: "");
+
+		queryStr.append(" ORDER BY ap.fecha DESC");
+
+		Query nativeQueray = em.createNativeQuery(queryStr.toString());
+
+		if (expediente != null && !expediente.equals("")) {
+			nativeQueray.setParameter("expediente", expediente);
+		}
+		if (fecha != null && !fecha.equals("")) {
+			nativeQueray.setParameter("fecha", fecha);
+		}
+
+		results = nativeQueray.getResultList();
+		log.info("tamanio Reg Diario:" + results.toString());
+
+		if (results.size() > 0) {
+			registros = results
+					.stream()
+					.map(result -> new AtencionesPsicologicasConcentradoDto(
+							(String) result[1],
+							(String) result[2],
+							(String) String.valueOf(result[3]),
+							(String) result[4],
+							(String) result[5]))
 					.collect(Collectors.toList());
 		}
 		return registros;
@@ -613,6 +659,67 @@ public class ConsultaServiceImpl implements ConsultaService {
 					filaDatos.createCell(7).setCellValue(indicador.getCalle());
 					filaDatos.createCell(8).setCellValue(String.valueOf(indicador.getLatitud()));
 					filaDatos.createCell(9).setCellValue(String.valueOf(indicador.getLongitud()));
+				}
+				for (int i = 1; i < columnasC1.length + 1; i++) { // auto ajustar la celda al contenido
+					hoja.autoSizeColumn(i);
+				}
+				File file = new File(getRuta());
+				FileOutputStream archivoSalida = new FileOutputStream(file);
+
+				libroTrabajo.write(archivoSalida);
+				archivoSalida.close();
+
+				libroTrabajo.close();
+				return file;
+			} catch (Exception e) {
+				log.info("Ocurrio un inconveniente al generar excel," + e.getMessage());
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public File generarAtencionPsicologicaReporte(String expediente, String fecha) {
+		List<AtencionesPsicologicasConcentradoDto> lista = null;
+		lista = buscarAtencionPsicologica(expediente, fecha);
+		if (lista != null) {
+			log.info("Generando Excel rows:" + lista.size());
+			try {
+				Workbook libroTrabajo = new HSSFWorkbook();
+				// new HSSFWorkbook() for generating `.xls` file
+				Sheet hoja = libroTrabajo.createSheet("Atenciones Psicológicas");
+
+				if (libroTrabajo instanceof HSSFWorkbook) {
+					((HSSFWorkbook) libroTrabajo).createInformationProperties();
+					((HSSFWorkbook) libroTrabajo).getSummaryInformation().setAuthor("By Greck alg2299");
+				}
+
+				Font fuenteCabecera = libroTrabajo.createFont(); // Creando fuente para la cabeceras
+				fuenteCabecera.setBold(true);
+				fuenteCabecera.setFontHeightInPoints((short) 12);
+				fuenteCabecera.setColor(IndexedColors.OLIVE_GREEN.getIndex());
+
+				CellStyle estiloCabeceraCelda = libroTrabajo.createCellStyle(); // creando estilo para las celdas
+				estiloCabeceraCelda.setFont(fuenteCabecera);
+				estiloCabeceraCelda.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+				// estiloCabeceraCelda.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+				Row filaCabecera = hoja.createRow(1); // Creando fila para cabeceras
+				int rowNum = 2;
+
+				String[] columnasC1 = { "EXPEDIENTE", "NOMBRE", "PARENTESCO", "FECHA", "OBSERVACIONES" };
+				for (int i = 0; i < columnasC1.length; i++) { // Creando cabeceras
+					Cell cell = filaCabecera.createCell(i + 1);
+					cell.setCellValue(columnasC1[i]);
+					cell.setCellStyle(estiloCabeceraCelda);
+				}
+				for (AtencionesPsicologicasConcentradoDto indicador : lista) { // Llenado celdas con datos
+					Row filaDatos = hoja.createRow(rowNum++);
+					filaDatos.createCell(1).setCellValue(indicador.getExpediente());
+					filaDatos.createCell(2).setCellValue(indicador.getNombre());
+					filaDatos.createCell(3).setCellValue(indicador.getParentesco());
+					filaDatos.createCell(4).setCellValue(indicador.getFecha());
+					filaDatos.createCell(5).setCellValue(indicador.getObservaciones());
 				}
 				for (int i = 1; i < columnasC1.length + 1; i++) { // auto ajustar la celda al contenido
 					hoja.autoSizeColumn(i);

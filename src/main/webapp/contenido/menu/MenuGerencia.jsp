@@ -147,6 +147,7 @@
         <div id="collapseAtencion" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <!-- <h6 class="collapse-header">Analisis de contexto</h6> -->
+                <a id="mAtencionesPsicologicas" class="collapse-item" href="#">Atenciones Psicológicas</a>
                 <a id="mEstatusPersonaDesaparecida" class="collapse-item" href="#">Consultar expediente</a>
                 <a id="mCargaEvidenciasAT" class="collapse-item" href="#">Carga de Evidencias</a>
             </div>
@@ -216,6 +217,7 @@
                 <a id="mregistroDiariodeBusqueda" class="collapse-item" href="#">Registro diario<a>                
                 <a id="mConcentradoColaboraciones" class="collapse-item" href="#">Colaboraciones</a>
                 <a id="mConcentradoLargaData" class="collapse-item" href="#">Larga Data</a>
+                <a id="mConcentradoAtencionesPsicologicas" class="collapse-item" href="#">Atenciones Psicológicas</a>
             </div>
         </div>
     </li>
