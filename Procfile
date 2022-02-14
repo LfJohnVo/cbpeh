@@ -1,1 +1,1 @@
-web: vendor/bin/heroku-php-apache2 public/
+web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT target/*.war
